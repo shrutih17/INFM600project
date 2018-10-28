@@ -26,6 +26,7 @@ One of the issues our group has found with the data, is that the column names ar
 1.	Inconsistent answers in the question about the respondent’s gender (e.g., some are “M” or “Mail”, some are in sentence format) (Open Sourcing Mental Illness, LTD, 2016b).
 2.	In the question “How many employees does your organization have” some have 25-Jun and 5-Jan as the answer (it must have been a formatting error with the .csv file) (Open Sourcing Mental Illness, LTD, 2016b).  Based off context clues from the other answers, they appear to be 6-25 and 1-5 (respectively).
 3.	For the age question, the minimum age is 3 and the maximum age is 323. However, the average age is 34, which implies that these may be typos. 
+
 ## Description of Steps Taking to Remediate
 1.	For the third issue, instead of dropping the rows with nonsensical ages, we will change them to the average age 34 so that we can make use of the other responses in the columns.
 
