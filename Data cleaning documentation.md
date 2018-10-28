@@ -16,7 +16,7 @@ In addition, those who use the data must indicate if any changes were made to th
 
 [insert text here – I think this indicates limitations on how the data can be used]
 
-##Description of Metadata
+## Description of Metadata
 The zip file that comes with the dataset contains a file called “osmi-survey-2016_1479139902,” which provides the available metadata for this dataset.  First, the file contains the total number of responses they got, as well as the total “complete” entries which can be found in the data file (Open Sourcing Mental Illness, LTD, 2016b).  The file also contains a paragraph providing information about what the survey will cover, how the survey will be anonymous, how long the survey will take to complete, and how the survey will be released and used (Open Sourcing Mental Illness, LTD, 2016b).  This paragraph appears to be the information provided to volunteers that chose to reply to this survey.  The file provides a list of all questions in the survey, and the “id” provides a clue about the type of question (e.g., yes/no, list, a number, a drop down) (Open Sourcing Mental Illness, LTD, 2016b).   Beneath each question is a “field_id” and it corresponds to the types of answers that were provided (Open Sourcing Mental Illness, LTD, 2016b).
 
 [insert text here – needs to be 1 paragraph]
