@@ -28,6 +28,10 @@ One of the issues our group has found with the data, is that the column names ar
 1.	Inconsistent answers in the question about the respondent’s gender (e.g., some are “M” or “Mail”, some are in sentence format) (Open Sourcing Mental Illness, LTD, 2016b).
 2.	In the question “How many employees does your organization have” some have 25-Jun and 5-Jan as the answer (it must have been a formatting error with the .csv file) (Open Sourcing Mental Illness, LTD, 2016b).  
 3.	For the age question, the minimum age is 3 and the maximum age is 323. However, the average age is 34, which implies that these may be typos (Open Sourcing Mental Illness, LTD, 2016b). 
+4.  For quite a few variables, the values for participants' responses are blank or NA. The blank values can interfere with the results of the analysis and in calculation of statistical parameters.
+5.  For some variables, for example: "Does your employer provide mental health benefits as part of healthcare coverage?", some participants have responded with "I don't know". For the purpose of the analysis, we would be considering these responses as null.
+6.  For the question, "Do you think that discussing a mental health disorder with your employer would have negative consequences" and "Would you feel comfortable discussing a mental health disorder with your coworkers?", one of the options for the responses is "Maybe". This adds an element of uncertainty to the respective analysis.
+7.  This one may not be an issue but needs to be modified for the purpose of the analysis. The question "If a mental health issue prompted you to request a medical leave from work, asking for that leave would be" has nominal responses ranging from "Very easy", "Somewhat easy", "Neither easy nor difficult", "Difficult" to "Very difficult". These nominal responses, if converted to a numerical scale of say, 1 to 5, would make analysis easier.
 
 ## Description of Steps Taking to Remediate
 
