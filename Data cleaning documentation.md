@@ -40,11 +40,13 @@ The first step is that each member of the group took 4-5 questions that were lis
 1. Some instances where there are inconsistent answers where the entry is clear can be standardized during data cleaning.  For instance, M or Mail can be converted into Male (or the code number assigned to "Male"), and "I am female" can be converted into Female (or the code number assigned to female) (Open Sourcing Mental Illness, LTD, 2016b).
 2. Some instances where there are odd answers that do not make sense in the context of the question can be determined using context clues.  For instance, for the "how many employees does your organization have" question, 25-Jun and 5-Jan appear to be respectively 6-25 and 1-5 based off of the other entries in that column (Open Sourcing Mental Illness, LTD, 2016b). 
 3. Other instances where there are clear typos can be handled by changing them to the average of that variable.  For instance, with the third issue listed above, instead of dropping the rows with nonsensical ages, we will change them to the average age 34 so that we can make use of the other responses in the columns (Open Sourcing Mental Illness, LTD, 2016b).
+4. The response values that are blank, NA or "I don't know" can be eliminated using R.
 
 
 ## Data Cleaning Process
 
 [insert text here – needs to be a script or step-by-step textual description that documents the data cleaning process]
+1. 
 
 ## Works Cited
 
