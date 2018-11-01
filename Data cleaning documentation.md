@@ -33,20 +33,17 @@ One of the issues our group has found with the data, is that the column names ar
 6.  For the question, "Do you think that discussing a mental health disorder with your employer would have negative consequences" and "Would you feel comfortable discussing a mental health disorder with your coworkers?", one of the options for the responses is "Maybe". This adds an element of uncertainty to the respective analysis.
 7.  This one may not be an issue but needs to be modified for the purpose of the analysis. The question "If a mental health issue prompted you to request a medical leave from work, asking for that leave would be" has nominal responses ranging from "Very easy", "Somewhat easy", "Neither easy nor difficult", "Difficult" to "Very difficult". These nominal responses, if converted to a numerical scale of say, 1 to 5, would make analysis easier.
 
-## Description of Steps Taking to Remediate
+## Description of Steps Taking to Remediate and Data Cleaning Process
 
 The first step is that each member of the group took 4-5 questions that were listed on the group work plan and determined which variables will be needed for each question.  From this, the group will come up with a planned list of variables to be used in the project and will split the variables used so that each user will investigate a group of variables.  The group will look at each variable to see if there are any odd entries like those listed above. For each issue encountered, the group will list the issues on a shared document and the group will work together to come up with an appropriate approach for each type of issue encountered.  Some approaches that would work for common issues in the dataset include:
 
 1. Some instances where there are inconsistent answers where the entry is clear can be standardized during data cleaning.  For instance, M or Mail can be converted into Male (or the code number assigned to "Male"), and "I am female" can be converted into Female (or the code number assigned to female) (Open Sourcing Mental Illness, LTD, 2016b).
 2. Some instances where there are odd answers that do not make sense in the context of the question can be determined using context clues.  For instance, for the "how many employees does your organization have" question, 25-Jun and 5-Jan appear to be respectively 6-25 and 1-5 based off of the other entries in that column (Open Sourcing Mental Illness, LTD, 2016b). 
 3. Other instances where there are clear typos can be handled by changing them to the average of that variable.  For instance, with the third issue listed above, instead of dropping the rows with nonsensical ages, we will change them to the average age 34 so that we can make use of the other responses in the columns (Open Sourcing Mental Illness, LTD, 2016b).
-4. The response values that are blank, NA or "I don't know" can be eliminated using R.
+4. The response values that are blank, NA or "I don't know" can be eliminated using R. 
 
+Once we come up with an approach with the issues, we will develop an R script (which will be on our final version of this document) to clean the dataset.  We will clean the variables that we reviewed for errors.  
 
-## Data Cleaning Process
-
-[insert text here – needs to be a script or step-by-step textual description that documents the data cleaning process]
-1. 
 
 ## Works Cited
 
