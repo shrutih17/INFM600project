@@ -42,7 +42,7 @@ The first step is that each member of the group took 4-5 questions that were lis
 3. Other instances where there are clear typos can be handled by changing them to the average of that variable.  For instance, with the third issue listed above, instead of dropping the rows with nonsensical ages, we will change them to the average age 34 so that we can make use of the other responses in the columns (Open Sourcing Mental Illness, LTD, 2016b).
 4. The response values that are blank, NA or "I don't know" can be eliminated using R. 
 
-Once we come up with an approach with the issues, we will develop an R script (which will be on our final version of this document) to clean the dataset.  We will clean the variables that we reviewed for errors.  
+Once we come up with an approach with the issues, we will develop an R script to clean the dataset.  We will clean the variables that we reviewed for errors.  
 
 
 ## Works Cited
