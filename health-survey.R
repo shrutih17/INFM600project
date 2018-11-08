@@ -1,5 +1,7 @@
 library(plyr)
 mental <- read.csv("mental-survey.csv")
+
+#Removing the self employed workers as it is out od our scope
 mental<- mental[!(mental$Are.you.self.employed.==1), ]
 
 # Renaming the column that are going to be used
