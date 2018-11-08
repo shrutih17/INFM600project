@@ -1,10 +1,10 @@
 library(plyr)
 mental <- read.csv("mental-survey.csv")
 
-#renaming the column that are going to be used
+# Renaming the column that are going to be used
 health <- rename(mental, "age"="What.is.your.age.","gender"="What.is.your.gender.", "mhd"= "If.yes..what.condition.s..have.you.been.diagnosed.with.")
 
-#cleaning the Gender column
+# Cleaning the Gender column
 health$gender[health$gender %in% c('male', 'Male ', 'M', 'm', 'man', 'Cis male',
                                    'Male.', 'Male (cis)', 'Man', 'Sex is male',
                                    'cis male', 'Malr', 'Dude', "I'm a man why didn't you make this a drop down question. You should of asked sex? And I would of answered yes please. Seriously how much text can this take? ",
@@ -27,12 +27,14 @@ health$gender[health$gender %in% c('Bigender', 'non-binary,', 'Genderfluid (born
                                    'Unicorn', 'human', 'Genderqueer') ]<- 'Other'
 View(health$gender)
 
+# Working using patterns
 # female_levels = levels(health$gender)[grep('(fe).*|^f$|fm|woman|female', levels(health$gender), ignore.case = T, perl = T)]
 # male_levels   = levels(health$gender)[grep('^m$|\bmale| male|mail|male |^male| man|\bman|^man$|masculine|dude|^male$', levels(health$gender), ignore.case = T, perl = T)]
 
-#minimum is 3 and maximum is 323
-summary(mental$What.is.your.age.)
-#Cleaning the values in the age column
+# Checking the current column 
+summary(mental$What.is.your.age.)#minimum is 3 and maximum is 323
+
+# Cleaning the values in the age column
 health$age[health$age >90]<-34
 health$age[health$age <10]<-34
 summary(health$age)
