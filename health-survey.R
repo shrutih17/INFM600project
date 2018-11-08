@@ -40,5 +40,14 @@ health$age[health$age >90]<-34
 health$age[health$age <10]<-34
 summary(health$age)
 
+# check the levels on the employer size variable (which is a factor variable in the cleaned dataset)
+levels(health$How.many.employees.does.your.company.or.organization.have.)
+# Doing a preliminary table to see the counts
+table(health$How.many.employees.does.your.company.or.organization.have.)
+# 01-May is 1-5 and 25-Jun is 6-25, so replace those in the factor list. 
+> levels(health$How.many.employees.does.your.company.or.organization.have.) = c("", "1-5", "100-500", "26-100", "500-1000", "6-25", "More than 1000")
+# confirming that the counts are the same (I also did a spot check of the 01-May and 25-Jun items and did not see errors)
+table(health$How.many.employees.does.your.company.or.organization.have.)
+
 write.csv(health, "mentalsurvey_clean.csv", row.names=FALSE)
 
