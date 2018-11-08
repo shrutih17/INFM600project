@@ -1,7 +1,7 @@
 mental <- read.csv("mental-survey.csv")
 
 library(plyr)
-health <- rename(mental, c("What.is.your.age." = "age","What.is.your.gender." = "gender"))
+health <- rename(mental, "age"="What.is.your.age.","gender"="What.is.your.gender.", "mhd"= "If.yes..what.condition.s..have.you.been.diagnosed.with.")
 
 health$gender[health$gender %in% c('male', 'Male ', 'M', 'm', 'man', 'Cis male',
                                    'Male.', 'Male (cis)', 'Man', 'Sex is male',
@@ -40,5 +40,5 @@ health$age[health$age >90]<-34
 health$age[health$age <10]<-34
 summary(health$age)
 
-write.csv(health, "mentalsurvey_clean.csv")
+write.csv(health, "mentalsurvey_clean.csv", row.names=FALSE)
 
