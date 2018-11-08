@@ -1,3 +1,4 @@
+health <- read.csv("mentalsurvey_clean.csv")
 tmp = health %>% separate(mhd, 
                           sep = '\\|',
                           c('mhd_1', 'mhd_2', 'mhd_3', 'mhd_4', 'mhd_5',
@@ -29,7 +30,7 @@ p <- ggplot(data=subdat, aes(x = reorder_size(V1)))+
   geom_bar(fill = 'black')+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-p+xlab("Mental health Disorders")
+p+xlab("Mental health Disorders")+ggtitle("Distribution of mental health disorders")
 
 count_disorder <-data.frame(count(subdat, V1, sort = TRUE))
 View(count_disorder)
