@@ -1,13 +1,12 @@
 # Before doing this upload the data to R Studio
-# checking to see what we have to clean
-table(mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`)
-# Cleaning employer size column replace 43276 with 6-25 (determined it was a conversion error by looking at the CSV)
-mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`[mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`=="43276"] <- "6-25"
-# Cleaning employer size column replace 43105 with 1-5 (determined it was a conversion error by looking at the CSV)
-mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`[mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`=="43105"] <- "1-5"
-# confirming that the file is cleaned
-table(mental_heath_in_tech_2016_20161114$`How many employees does your company or organization have?`)
-
+# check the levels on the employer size variable (which is a factor variable in the cleaned dataset)
+levels(mental$How.many.employees.does.your.company.or.organization.have.)
+# Doing a preliminary table to see the counts
+table(mental$How.many.employees.does.your.company.or.organization.have.)
+# 01-May is 1-5 and 25-Jun is 6-25, so replace those in the factor list. 
+> levels(mental$How.many.employees.does.your.company.or.organization.have.) = c("", "1-5", "100-500", "26-100", "500-1000", "6-25", "More than 1000")
+# confirming that the counts are the same (I also did a spot check of the 01-May and 25-Jun items and did not see errors)
+table(mental$How.many.employees.does.your.company.or.organization.have.)
 
 #Renaming the column "Does your employer provide mental health benefits as part of healthcare coverage? "
 names(mental_heath_in_tech_2016_20161114)[5]<-"EmployerMHBen"
