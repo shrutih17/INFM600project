@@ -1,5 +1,6 @@
 library(plyr)
 mental <- read.csv("mental-survey.csv")
+mental<- mental[!(mental$Are.you.self.employed.==1), ]
 
 # Renaming the column that are going to be used
 health <- rename(mental, "age"="What.is.your.age.","gender"="What.is.your.gender.", "mhd"= "If.yes..what.condition.s..have.you.been.diagnosed.with.")
