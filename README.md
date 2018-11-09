@@ -10,3 +10,6 @@ CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0 International)
 
 Tasks done
 - Created a Group Work Plan document for our project. 
+- Created a data cleaning documentation
+- Worked on R script to clean the data
+- Working on the visualizations
