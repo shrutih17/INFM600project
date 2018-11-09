@@ -42,7 +42,7 @@ The first step is that each member of the group took 4-5 questions that were lis
 3. Other instances where there are clear typos can be handled by changing them to the average of that variable.  For instance, with the third issue listed above, instead of dropping the rows with nonsensical ages, we will change them to the average age 34 so that we can make use of the other responses in the columns (Open Sourcing Mental Illness, LTD, 2016b).
 4. We ultimately decided not to eliminate blank or NA variables from the dataset.  A lot of the blank entries are from those who are self employed, which we plan to exclude from our analysis as we are taking the perspective of a Human Resources department in an organization.
 
-The code that we used to handle issues with our dataset can be found here:  https://github.com/shrutih17/INFM600project/blob/develop/health-survey.R
+The code that we used to handle issues with our dataset can be found here:  https://github.com/shrutih17/INFM600project/blob/master/health-survey.R
 
 ## Works Cited
 
