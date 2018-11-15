@@ -1,3 +1,5 @@
+library(dplyr)
+library(ggplot2)
 health <- read.csv("mentalsurvey_clean.csv")
 tmp = health %>% separate(mhd, 
                           sep = '\\|',
@@ -17,20 +19,20 @@ comb1 = comb[comb != ""&!is.na(comb)]
 comb1
 
 disorders=sapply(strsplit(comb1, split = " \\("), `[`, 1)
-dat <- as.data.frame(matrix(disorders))
-subdat<- subset(dat, disorders != "I haven\'t been formally diagnosed, so I felt uncomfortable answering, but Social Anxiety and Depression.")
+dataf <- as.data.frame(matrix(disorders))
+subdataf <- subset(dataf, disorders != "I haven\'t been formally diagnosed, so I felt uncomfortable answering, but Social Anxiety and Depression.")
 
-View(subdat)
+View(subdataf)
 
 reorder_size <- function(x) {
   factor(x, levels = names(sort(table(x), decreasing = TRUE)))
 }
 
-p <- ggplot(data=subdat, aes(x = reorder_size(V1)))+
+p <- ggplot(data=subdataf, aes(x = reorder_size(V1)))+
   geom_bar(fill = 'black')+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-p+xlab("Mental health Disorders")+ggtitle("Distribution of mental health disorders")
+p+xlab("Current Mental health disorders")+ggtitle("Distribution of current Mental health disorders")
 
 count_disorder <-data.frame(count(subdat, V1, sort = TRUE))
 View(count_disorder)

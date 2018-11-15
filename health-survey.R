@@ -1,4 +1,7 @@
 library(plyr)
+library(dplyr)
+library(tidyr)
+
 mental <- read.csv("mental-survey.csv")
 
 #Removing the self employed workers as it is out od our scope
@@ -27,7 +30,7 @@ health$gender[health$gender %in% c('Bigender', 'non-binary,', 'Genderfluid (born
                                    'Enby', 'genderqueer woman', 'Queer', 'Agender', 'Fluid',
                                    'Genderflux demi-girl', 'female-bodied; no feelings about gender',
                                    'non-binary', 'Male/genderqueer', 'Nonbinary', 'Other', 'none of your business',
-                                   'Unicorn', 'human', 'Genderqueer') ]<- 'Other'
+                                   'Unicorn', 'human', 'Genderqueer', 'N/A', '') ]<- 'Other'
 View(health$gender)
 
 # Working using patterns
