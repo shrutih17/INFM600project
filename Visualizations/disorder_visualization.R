@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 health <- read.csv("mentalsurvey_clean.csv")
 tmp = health %>% separate(mhd, 
@@ -34,7 +35,7 @@ p <- ggplot(data=subdataf, aes(x = reorder_size(V1)))+
 
 p+xlab("Current Mental health disorders")+ggtitle("Distribution of current Mental health disorders")
 
-count_disorder <-data.frame(count(subdat, V1, sort = TRUE))
+count_disorder <-data.frame(count(subdataf, V1, sort = TRUE))
 View(count_disorder)
 
 #combi = na.action(comb,rm)
