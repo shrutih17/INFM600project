@@ -51,7 +51,13 @@ View(count_disorder)
 # tmp3
 
 #Do a table showing answers to question: "How many employees does your company or organization have"
-table(health$How.many.employees.does.your.company.or.organization.have)
+table(health$How.many.employees.does.your.company.or.organization.have.)
+#First, I need to reorder the variables
+ENumOrder  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
+#Then I can do the table
+table(ENumOrder)
+#Do a barplot showing answers to question about how many employees
+barplot(table(ENumOrder), main = "How Many Employees Does Your Organization Have", xlab = "Answer", ylab = "Count", ylim=c(0,400), las = 1.5, cex.names=0.5)
 
 #Do a table showing answers to question: "How willing would you be to share with friends and family that you have a mental illness?"
 table(health$How.willing.would.you.be.to.share.with.friends.and.family.that.you.have.a.mental.illness.)
@@ -111,7 +117,7 @@ prop.table(ELDbG, 2)
 chisq.test(ELDbG)
 
 #Answers by Company Size (crosstab table)
-ELDbCS <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$How.many.employees.does.your.company.or.organization.have.)
+ELDbCS <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., ENumOrder)
 ELDbCS
 #Proportions (as column percentages)
 prop.table(ELDbCS, 2)
@@ -162,7 +168,7 @@ prop.table(MHbG, 2)
 chisq.test(MHbG)
 
 #Answers by Company Size (crosstab table)
-MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$How.many.employees.does.your.company.or.organization.have.)
+MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., ENumOrder)
 MHbCS
 #Proportions (as column percentages)
 prop.table(MHbCS, 2)
@@ -212,7 +218,7 @@ prop.table(MHCbG, 2)
 chisq.test(MHCbG)
 
 #Answers by Company Size (crosstab table)
-MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$How.many.employees.does.your.company.or.organization.have.)
+MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., ENumOrder)
 MHCbCS
 #Proportions (as column percentages)
 prop.table(MHCbCS, 2)
