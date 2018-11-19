@@ -12,7 +12,6 @@ tmp = health %>% separate(mhd,
 chk = tmp %>% select(matches('mhd_[1-9]'))
 chk
 # tmp2 = tmp %>% select(matches('mhd_[1-9]')) %>% mutate_all(.funs = 'as.factor')
-# View(tmp2)
 
 comb = as.vector(t(chk))
 comb
@@ -37,18 +36,6 @@ p+xlab("Current Mental health disorders")+ggtitle("Distribution of current Menta
 
 count_disorder <-data.frame(count(subdataf, V1, sort = TRUE))
 View(count_disorder)
-
-#combi = na.action(comb,rm)
-
-# tmp2 %>% select(matches('mhd_[1-9]')) %>% str()
-# tmp_newrow = tmp2 %>% unite(disorders,sep = '',remove =TRUE)
-# View(tmp_newrow)
-
-# typeof(health$mhd)
-# tmp1 = separate_rows(health,mhd,sep = '\\|')
-# tmp4 = as.character(health$mhd)
-# tmp3 = strsplit(tmp4, "\\|")
-# tmp3
 
 #Do a table showing answers to question: "How many employees does your company or organization have"
 table(health$How.many.employees.does.your.company.or.organization.have.)
@@ -265,7 +252,40 @@ prop.table(MHCbCN, 2)
 #Chi-Squared (the p value is small)
 chisq.test(MHCbCN)
 
-#write.csv(tmp, "mentalsurvey_separator.csv", row.names=FALSE)
+#crosstab 
+gender_disorder <- table(health$Do.you.currently.have.a.mental.health.disorder., health$gender)
+gender_disorder
+colprop <- prop.table(gender_disorder,2)# To know the % of each level gender who may, don't or have mental disorder
+rprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
+dr1 <-as.data.frame(rowprop)
+dr2 <-as.data.frame(colprop)
+ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
 
+ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
 
+summary(health$age)
+findInterval(health$age, c(20, 30, 40))
 
+labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
+                sep = "-"))
+labs
+health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
+View(health$AgeGroup)
+
+agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
+ageprop <- prop.table(agegr,2)
+dfageprop <- as.data.frame(ageprop)
+ageprop1 <- prop.table(agegr,1)
+dfageprop1 <- as.data.frame(ageprop1)
+
+ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
+
+ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
