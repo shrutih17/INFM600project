@@ -96,7 +96,7 @@ table(health$How.many.employees.does.your.company.or.organization.have., health$
 gender_disorder <- table(health$Do.you.currently.have.a.mental.health.disorder., health$gender)
 gender_disorder
 colprop <- prop.table(gender_disorder,2)# To know the % of each level gender who may, don't or have mental disorder
-rprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
+rowprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
 dr1 <-as.data.frame(rowprop)
 dr2 <-as.data.frame(colprop)
 ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
