@@ -54,7 +54,7 @@ barplot(table(health$How.willing.would.you.be.to.share.with.friends.and.family.t
 #Do a table showing answers to question: "Has your employer ever formally discussed mental health (for example, as part of a wellness campaign or other official communication)?"
 table(health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
 #Do a barplot showing answers to question: "Has your employer ever formally discussed mental health (for example, as part of a wellness campaign or other official communication)?"
-barplot(table(health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..), main = "Has your employer formally discussed mental health with you?", xlab = "Answer", ylab = "Count", ylim=c(0,1000))
+barplot(table(health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..), main = "Has your employer discussed mental health with you?", xlab = "Answer", ylab = "Count", ylim=c(0,1000))
 
 #Do a table showing answers to question: "Is your anonymity protected if you choose to take advantage of mental health or substance abuse treatment resources provided by your employer?"
 table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)
@@ -92,6 +92,43 @@ table(health$How.many.employees.does.your.company.or.organization.have., health$
 #Do a crosstab table showing whether employers provide other resources by company size
 table(health$How.many.employees.does.your.company.or.organization.have., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
 
+#crosstab 
+gender_disorder <- table(health$Do.you.currently.have.a.mental.health.disorder., health$gender)
+gender_disorder
+colprop <- prop.table(gender_disorder,2)# To know the % of each level gender who may, don't or have mental disorder
+rprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
+dr1 <-as.data.frame(rowprop)
+dr2 <-as.data.frame(colprop)
+ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
+
+ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
+
+summary(health$age)
+findInterval(health$age, c(20, 30, 40))
+
+labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
+                sep = "-"))
+labs
+health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
+View(health$AgeGroup)
+
+agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
+ageprop <- prop.table(agegr,2)
+dfageprop <- as.data.frame(ageprop)
+ageprop1 <- prop.table(agegr,1)
+dfageprop1 <- as.data.frame(ageprop1)
+
+ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
+
+ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
 
 #POSSIBLE FACTORS IN WHETHER EMPLOYEE FEELS ASKING FOR LEAVE WOULD BE DIFFICULT
 
@@ -102,6 +139,14 @@ ELDbG
 prop.table(ELDbG, 2)
 #Chi-Squared (We get a warning that the approximation may be incorrect, likely b/c the other values are small)
 chisq.test(ELDbG)
+
+#Answers by Age Group (crosstab table)
+ELDbA <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$AgeGroup)
+ELDbA
+#Proportions (as column percentages)
+prop.table(ELDbA, 2)
+#Chi-Squared (We get a huge chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
+chisq.test(ELDbA)
 
 #Answers by Company Size (crosstab table)
 ELDbCS <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., ENumOrder)
@@ -146,13 +191,21 @@ chisq.test(ELDbPR)
 
 #POSSIBLE FACTORS IN COMFORT WITH DISCUSSING MH WITH SUPERVISORS
 
-#Answers by Gender (Counts)
+#Answers by Gender (crosstab table)
 MHbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$gender)
 MHbG
 #Proportions (as column percentages)
 prop.table(MHbG, 2)
 #Chi-Squared (the p value is very large, which indicates that differences among genders is probably not significant)
 chisq.test(MHbG)
+
+#Answers by Age Group (crosstab table)
+MHbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$AgeGroup)
+MHbA
+#Proportions (as column percentages)
+prop.table(MHbA, 2)
+#Chi-Squared (We get a big chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
+chisq.test(MHbA)
 
 #Answers by Company Size (crosstab table)
 MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., ENumOrder)
@@ -204,6 +257,14 @@ prop.table(MHCbG, 2)
 #Chi-Squared (the p value is large, which indicates differences among gender is not stat sig)
 chisq.test(MHCbG)
 
+#Answers by Age Group (crosstab table)
+MHCbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$AgeGroup)
+MHCbA
+#Proportions (as column percentages)
+prop.table(MHCbA, 2)
+#Chi-Squared (We get a big chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
+chisq.test(MHCbA)
+
 #Answers by Company Size (crosstab table)
 MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., ENumOrder)
 MHCbCS
@@ -251,41 +312,3 @@ MHCbCN
 prop.table(MHCbCN, 2)
 #Chi-Squared (the p value is small)
 chisq.test(MHCbCN)
-
-#crosstab 
-gender_disorder <- table(health$Do.you.currently.have.a.mental.health.disorder., health$gender)
-gender_disorder
-colprop <- prop.table(gender_disorder,2)# To know the % of each level gender who may, don't or have mental disorder
-rprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
-dr1 <-as.data.frame(rowprop)
-dr2 <-as.data.frame(colprop)
-ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
-  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
-
-ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
-  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
-
-summary(health$age)
-findInterval(health$age, c(20, 30, 40))
-
-labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
-                sep = "-"))
-labs
-health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
-View(health$AgeGroup)
-
-agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
-ageprop <- prop.table(agegr,2)
-dfageprop <- as.data.frame(ageprop)
-ageprop1 <- prop.table(agegr,1)
-dfageprop1 <- as.data.frame(ageprop1)
-
-ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
-  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
-
-ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
-  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
