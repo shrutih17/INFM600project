@@ -405,3 +405,10 @@ Data3<-table(Health$Does.your.employer.provide.mental.health.benefits.as.part.of
 prop.table(Data3)
 #Chi-Square test (gives small p value)
 chisq.test(Data3)
+
+#Relationship between gender and mental health distribution
+Data4<-table(Health$What.is.your.gender., Health$Have.you.been.diagnosed.with.a.mental.health.condition.by.a.medical.professional.)
+#Proportion of genders diagnosed with mental health illness
+prop.table(Data4)
+#Chi-Square test(gives small p value)
+chisq.test(Data4)
