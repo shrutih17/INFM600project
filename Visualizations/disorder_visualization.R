@@ -412,3 +412,10 @@ Data4<-table(Health$What.is.your.gender., Health$Have.you.been.diagnosed.with.a.
 prop.table(Data4)
 #Chi-Square test(gives small p value)
 chisq.test(Data4)
+
+#Relationship between their mental illness and their own perceived productivity:
+Data5<-table(Health$If.you.have.a.mental.health.issue..do.you.feel.that.it.interferes.with.your.work.when.being.treated.effectively., Health$Have.you.been.diagnosed.with.a.mental.health.condition.by.a.medical.professional.)
+#Proportion of responses for impact of mental illness on perceived productivity
+prop.table(Data5)
+#Chi-Square test (gives small p value)
+chisq.test(Data5)
