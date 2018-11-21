@@ -83,6 +83,9 @@ barplot(table(health$Would.you.feel.comfortable.discussing.a.mental.health.disor
 
 #COMPANY SIZE AND PROVISION OF BENEFITS
 
+#Descriptive statistics for the variable related to company size
+summary(Health$How.many.employees.does.your.company.or.organization.have.)
+
 #Do a crosstab table showing provision of health benefits by company size
 table(health$How.many.employees.does.your.company.or.organization.have., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
 
