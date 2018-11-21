@@ -312,3 +312,77 @@ MHCbCN
 prop.table(MHCbCN, 2)
 #Chi-Squared (the p value is small)
 chisq.test(MHCbCN)
+
+#Importing the dataset
+
+Health<-read.csv(file.choose())
+Health
+
+#VARIABLE NAME: Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.
+#Checking the frequency distribution for the variable in the table
+table(Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+#Visualizing the frequency distribution of the responses to the variable
+barplot(table(Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.), main = "Negative consequences of discussing mental disorders with Employer", xlab = "Responses of Participants", ylab = "Frequency Distribution of Responses")
+#Distribution based on gender
+barplot(table(Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences., Health$gender))
+#Distribution based on age
+barplot(table(Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences., Health$age))
+
+#VARIABLE: Does your employer provide mental health benefits as part of healthcare coverage? 
+#Checking the frequency distribution for the variable
+table(Health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+#Dropping the unused values from the variable
+dataframe1<-droplevels(Health)
+barplot(table(dataframe1$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.), main = "Does the healthcare coverage include mental health benefits?", xlab = "Participant responses", ylab = "Frequency distribution of responses")
+
+#VARIABLE: Does your employer offer resources to learn more about mental health concerns and options for seeking help?
+#Checking the frequency distribution for the variable
+table(Health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+#Plotting a barplot for the variable
+barplot(table(Health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.), main = "Employer Resources", xlab = "Participant responses", ylab = "Frequency distribution of responses")
+install.packages("gmodels")
+library(gmodels)
+#Cross table to show availability of resources to learn about mental health benefits by size of the organization 
+CrossTable(Health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help., Health$How.many.employees.does.your.company.or.organization.have.)
+
+#VARIABLE:If a mental health issue prompted you to request a medical leave from work, asking for that leave would be
+#Checking the frequency distribution for the variable
+table(Health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.)
+#Barplot for the variable
+barplot(table(Health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.))
+
+install.packages("MASS")
+library(MASS)
+
+#VARIABLE: Is your employer primarily a tech company/organization?
+#Checking the frequency distribution for the variable
+table(Health$Is.your.employer.primarily.a.tech.company.organization.)
+#Barplot for the variable
+barplot(table(Health$Is.your.employer.primarily.a.tech.company.organization.), main = "Is the employer primarily a tech organization", xlab = "Participant Responses", ylab = "Frequency distribution of the responses")
+#Cross table for provision of mental health benefits by type of organization
+CrossTable(Health$Is.your.employer.primarily.a.tech.company.organization., Health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+
+VARIABLE: Do you have a family history of mental illness?
+#Checking the frequency distribution for the variable
+table(Health$Do.you.have.a.family.history.of.mental.illness.)
+#barplot for the variable to visualize the frequency distribution
+barplot(table(Health$Do.you.have.a.family.history.of.mental.illness.), main = "Family history of mental illness", xlab = "Participant responses", ylab = "Frequency distribution of responses")
+
+#VARIABLE: Have you had a mental health disorder in the past?
+#Checking the frequency distribution for the variable
+table(Health$Have.you.had.a.mental.health.disorder.in.the.past.)
+#barplot for the variable to visualize the frequency distribution
+barplot(table(Health$Have.you.had.a.mental.health.disorder.in.the.past.), main = "Past Mental Illness", xlab = "Participant Responses", ylab = "Frequency distribution of the Responses")
+
+#VARIABLE: Do you currently have a mental health disorder? 
+#Checking the frequency distribution for the variable
+table(Health$Do.you.currently.have.a.mental.health.disorder.)
+#Checking the frequency distribution for the variable
+barplot(table(Health$Do.you.currently.have.a.mental.health.disorder.), main = "Current Mental Disorder", xlab = "Participant Responses", ylab = "Frequency Distribution of Responses")
+
+#VARIABLE: If you have a mental health issue, do you feel that it interferes with your work when NOT being treated effectively? 
+#Checking the frequency distribution for the variable
+table(Health$If.you.have.a.mental.health.issue..do.you.feel.that.it.interferes.with.your.work.when.NOT.being.treated.effectively.)
+#barplot for visualizing the frequency distribution of the variable
+barplot(table(Health$If.you.have.a.mental.health.issue..do.you.feel.that.it.interferes.with.your.work.when.NOT.being.treated.effectively.), main = "Mental Health Interference in Absence of Treatment", xlab = "Participant Responses", ylab = "Frequency Distribution of the Responses")
+
