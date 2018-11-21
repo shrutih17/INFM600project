@@ -386,3 +386,17 @@ table(Health$If.you.have.a.mental.health.issue..do.you.feel.that.it.interferes.w
 #barplot for visualizing the frequency distribution of the variable
 barplot(table(Health$If.you.have.a.mental.health.issue..do.you.feel.that.it.interferes.with.your.work.when.NOT.being.treated.effectively.), main = "Mental Health Interference in Absence of Treatment", xlab = "Participant Responses", ylab = "Frequency Distribution of the Responses")
 
+#Relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace.
+Data2<- table(Health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences., Health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
+Data2
+#Proportaions of the Participant Responses
+prop.table(Data2, 2)
+#Chi-Square test (Gives small p value) 
+chisq.test(Data2)
+
+#Relationship between provision of mental health benefits and formal discussion of the same by the employer
+Data3<-table(Health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage., Health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+#Proportions of the Participant Responses
+prop.table(Data3)
+#Chi-Square test (gives small p value)
+chisq.test(Data3)
