@@ -27,7 +27,7 @@ View(subdataf)
 reorder_size <- function(x) {
   factor(x, levels = names(sort(table(x), decreasing = TRUE)))
 }
-
+#Plot to see the distribution of current mental health illness
 p <- ggplot(data=subdataf, aes(x = reorder_size(V1)))+
   geom_bar(fill = 'black')+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -99,17 +99,18 @@ colprop <- prop.table(gender_disorder,2)# To know the % of each level gender who
 rowprop <- prop.table(gender_disorder,1) #To know the % of who may, don't or have mental disorder among genders
 dr1 <-as.data.frame(rowprop)
 dr2 <-as.data.frame(colprop)
+
+# Distribution of respondents among gender provided they may/have/donot have a mental diorder 
 ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
   labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
-
+# Distribution of respondents who may/have/donot have a mental diorder over the gender
 ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution ')
+  labs(x = NULL, y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution ')
 
 summary(health$age)
-findInterval(health$age, c(20, 30, 40))
-
+#Creating lavbels for age groups
 labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
                 sep = "-"))
 labs
@@ -122,6 +123,7 @@ dfageprop <- as.data.frame(ageprop)
 ageprop1 <- prop.table(agegr,1)
 dfageprop1 <- as.data.frame(ageprop1)
 
+#Distribution of respondents reporting a mental disorder by age groups
 ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
   labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
@@ -362,7 +364,7 @@ barplot(table(Health$Is.your.employer.primarily.a.tech.company.organization.), m
 #Cross table for provision of mental health benefits by type of organization
 CrossTable(Health$Is.your.employer.primarily.a.tech.company.organization., Health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
 
-VARIABLE: Do you have a family history of mental illness?
+#VARIABLE: Do you have a family history of mental illness?
 #Checking the frequency distribution for the variable
 table(Health$Do.you.have.a.family.history.of.mental.illness.)
 #barplot for the variable to visualize the frequency distribution
