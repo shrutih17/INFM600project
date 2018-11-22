@@ -1,0 +1,407 @@
+---
+title: "Draft Visualizationa for Semester Project"
+output: html_document
+---
+#Loading the Data and Necessary Packages
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+health <- read.csv("mentalsurvey_clean.csv")
+```
+
+#Section 1: Showing that Mental and Behavioral Health Issues Impact Workers
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Section 2: What are Other Companies Doing to Assist workers with Mental and Behavioral Health Policies
+
+```{r}
+
+```
+
+#Section 3: What are Factors that Might Limit the Impact of Behavioral Health Outreach
+
+##Anonymity Policies 
+
+If employees feel that their anonymity is not protected, they may be less likely to reach out for help.
+
+###Anonymity Policies by Company Size
+
+```{r}
+
+```
+
+###Anonymity Policies by Whether it is a Tech Company
+
+```{r}
+
+```
+
+##Ease of Asking for Leave For A Mental Health Issue
+
+This is important because if employees feel that asking for time off from work for medical leave, they may be less likely to seek the help they need. 
+
+###Answers by Gender
+
+```{r}
+#Crosstab table
+ELDbG <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$gender)
+ELDbG
+```
+
+####Chi-Squared 
+
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between genders may not be statistically significant (or we do not have enough information)
+
+```{r}
+chisq.test(ELDbG)
+```
+
+
+###Answers by Age Group
+
+```{r}
+#Do the AgeGroup Variable
+labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
+                sep = "-"))
+health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
+```
+
+```{r}
+#Crosstab table
+ELDbA <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$AgeGroup)
+ELDbA
+```
+
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information)
+
+###Chi-Squared
+```{r}
+chisq.test(ELDbA)
+```
+
+
+###Answers by Company Size
+
+```{r}
+#Put company size in order
+ENumOrder  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
+```
+
+```{r}
+#Crosstab table
+ELDbCS <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., ENumOrder)
+ELDbCS
+```
+
+###Chi-Squared
+
+```{r}
+chisq.test(ELDbCS)
+```
+
+
+###Answers by Whether Company is Primarily a Tech Company
+
+```{r}
+
+```
+
+####Chi-Squared
+
+```{r}
+
+```
+
+###Answers by Whether Anonymity Is Protected
+
+```{r}
+
+```
+
+####Chi-Squared
+
+```{r}
+
+```
+
+###Answers by Whether Current Company Provides Mental Health Benefits
+
+```{r}
+#Crosstab Table
+ELDbMHB <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+ELDbMHB
+```
+
+###Chi-Squared
+
+```{r}
+chisq.test(ELDbMHB)
+```
+
+###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
+
+```{r}
+ELDbEDM <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+ELDbEDM
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(ELDbEDM)
+```
+
+###Answers by Whether Current Company Offers Other Resources
+
+```{r}
+ELDbEOR <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+ELDbEOR
+```
+
+####Chi-Squared 
+
+```{r}
+chisq.test(ELDbEOR)
+```
+
+###Answers by If They Ever Saw A Poor Response to Mental Health Issue
+
+```{r}
+ELDbPR <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+ELDbPR
+```
+
+####Chi-Squared
+```{r}
+chisq.test(ELDbPR)
+```
+
+##Comfort with talking to Supervisor About Mental Health
+
+This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a supervisor in case they need additional assistance. In addition, we may want to consider training supervisors on how to handle instances where employees reach out to them about mental health. 
+
+###Answers by Gender
+
+```{r}
+MHbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$gender)
+MHbG
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHbG)
+```
+
+###Answers by Age Group
+
+```{r}
+MHbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$AgeGroup)
+MHbA
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHbA)
+```
+
+###Answers by Company Size
+```{r}
+MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., ENumOrder)
+MHbCS
+```
+
+####Chi-Squared
+```{r}
+chisq.test(MHbCS)
+```
+
+###Answers by Whether Company is Primarily a Tech Company
+
+```{r}
+
+```
+
+###Answers by Whether Anonymity Is Protected
+
+```{r}
+
+```
+
+###Answers by Whether Current Company Provides Mental Health Benefits
+
+```{r}
+MHbMHB <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+MHbMHB
+```
+
+####Chi-Squared
+```{r}
+chisq.test(MHbMHB)
+```
+
+
+###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
+
+```{r}
+MHbEDM <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+MHbEDM
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHbEDM)
+```
+
+###Answers by Whether Current Company Offers Other Resources
+
+```{r}
+MHbEOR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+MHbEOR
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHbEOR)
+```
+
+###Answers by If They Ever Saw A Poor Response to Mental Health Issue
+
+```{r}
+MHbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+MHbPR
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHbPR)
+```
+
+###Answers by If They Think Supervisor Would View Them Negatively If They Knew You Suffered From a Mental Health Issue
+
+```{r}
+
+```
+
+##Comfort with taking to Coworkers About Mental Health
+
+This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a coworkers in case they need additional assistance. In addition, we may want to consider training employees on how to handle instances where coworkers reach out to them about mental health. 
+
+###Answers by Gender
+
+```{r}
+MHCbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$gender)
+MHCbG
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHCbG)
+```
+
+###Answers by Age Group
+
+```{r}
+MHCbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$AgeGroup)
+MHCbA
+#Proportions (as column percentages)
+prop.table(MHCbA, 2)
+#Chi-Squared (We get a big chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
+chisq.test(MHCbA)
+```
+
+###Answers by Company Size
+
+```{r}
+MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., ENumOrder)
+MHCbCS
+#Proportions (as column percentages)
+prop.table(MHCbCS, 2)
+#Chi-Squared (the p value is small)
+chisq.test(MHCbCS)
+```
+
+###Answers by Whether Company is Primarily a Tech Company
+
+```{r}
+
+```
+
+###Answers by Whether Anonymity Is Protected
+
+```{r}
+
+```
+
+###Answers by Whether Current Company Provides Mental Health Benefits
+
+```{r}
+MHCbMHB <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+MHCbMHB
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHCbMHB)
+```
+
+###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
+
+```{r}
+MHCbEDM <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+MHCbEDM
+```
+
+####Chi-Squared
+```{r}
+chisq.test(MHCbEDM)
+```
+
+###Answers by Whether Current Company Offers Other Resources
+
+```{r}
+MHCbEOR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+MHCbEOR
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHCbEOR)
+```
+
+###Answers by If They Ever Saw A Poor Response to Mental Health Issue
+
+```{r}
+MHCbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+MHCbPR
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(MHCbPR)
+```
+
+###Answers by If They Think Coworkers Would View Them Negatively If They Knew You Suffered From a Mental Health Issue
+
+```{r}
+MHCbCN <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue.)
+MHCbCN
+```
+
+####Chi-Squared
+```{r}
+chisq.test(MHCbCN)
+```
+
