@@ -7,6 +7,7 @@ output: html_document
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+#Insert the location of your data here, for example
 health <- read.csv("mentalsurvey_clean.csv")
 ```
 
@@ -30,15 +31,96 @@ If employees feel that their anonymity is not protected, they may be less likely
 
 ###Anonymity Policies by Company Size
 
-```{r}
+####Crosstab Table
 
+```{r}
+#Put company size in order
+CompanySize  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
+#Create Cross-tab Table
+APbCS <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., CompanySize)
+head(APbCS)
 ```
+
+####Proportions table
+
+```{r}
+#Create a proportions table by Row
+prop.table(APbCS, 2)
+```
+
+####Chi-Squared Test 
+
+```{r}
+#Do a chi-squared test
+chisq.test(APbCS)
+```
+
+####Visualization of Data
+
+```{r}
+ggplot(health, aes(CompanySize, health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)) + geom_jitter(height = .3, width = .3) + ggtitle("Anonymity Protections For Mental Health Services") + xlab("Company Size") + ylab("Is Anonymity Protected?") 
+```
+
+####Interpretation of Results 
+
+The table and chart above show that across all company sizes, most respondents indicate that they do not know what their current company's anonymity policy is towards those using mental health services.  For companies of 1-5 employees, the next most common answer is "No" (anonymity is not protected). However, for companies larger than 5 employees, the results appear fairly consistent, with the majority of respondents (60-70 percent) indicating that they do not know anonymity policies, a sizable minority of respondents saying that anonymity is protected (25-32 percent), and less than 10 percent of respondents in each group saying anonymity is not protected. Based off of the chi-squared test, it is not clear if there is a statistically significant difference in anonymity policies of companies of different sizes.  
 
 ###Anonymity Policies by Whether it is a Tech Company
 
-```{r}
+####Cross-tab Table
 
+```{r}
+#Add labels to tech company org
+TLabel <- factor(health$Is.your.employer.primarily.a.tech.company.organization.,
+levels = c(0, 1),
+labels = c("No", "Yes"))
+#Create a crosstab table
+APbT2 <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., TLabel)
+head(APbT2)
 ```
+
+####Proportions table
+
+```{r}
+#Create a proportions table by Row
+prop.table(APbT2, 2)
+```
+
+####Chi-Squared Test 
+
+```{r}
+#Do a chi-squared test
+chisq.test(APbT2)
+```
+
+####Visualization of Data
+
+OPTION 1
+
+```{r}
+ggplot(health, aes(TLabel, health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)) + geom_jitter(height = .3, width = .3) + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is Employer Primarily Tech?") + ylab("Is Anonymity Protected?") 
+```
+
+OPTION 2
+
+```{r}
+#Run Counts
+summary(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)
+#Modify Labels
+levels(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.) <- c("Don't Know Anonymity Policy", "Anonymity Not Protected", "Anonymity Protected")
+#Check to make sure
+summary(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)
+```
+
+```{r}
+#Create Visualization
+p3 <- ggplot(health, aes(x = TLabel))+geom_bar()+facet_wrap(~ health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)+ ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is Employer Primarily Tech?") + ylab("Count") 
+p3
+```
+
+####Interpretation of Results 
+
+The difference between primarily tech and non-primarily tech companies is not statistically significant in regards to anonymity policies for those seeking mental health services.  In both cases, the clear majority of those surveyed indicated that they do not know  their current company's anonymity policy is towards those using mental health services.  In both cases, the next most common response to the question is that anonymity is protected for those using mental health services.
 
 ##Ease of Asking for Leave For A Mental Health Issue
 
@@ -85,11 +167,6 @@ chisq.test(ELDbA)
 
 
 ###Answers by Company Size
-
-```{r}
-#Put company size in order
-ENumOrder  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
-```
 
 ```{r}
 #Crosstab table
