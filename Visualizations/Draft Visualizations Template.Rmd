@@ -1,13 +1,13 @@
 ---
 title: "Draft Visualizationa for Semester Project"
-output: html_document
+output: word_document
 ---
+
 #Loading the Data and Necessary Packages
 ```{r}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-#Insert the location of your data here, for example
 health <- read.csv("mentalsurvey_clean.csv")
 ```
 
@@ -35,9 +35,9 @@ If employees feel that their anonymity is not protected, they may be less likely
 
 ```{r}
 #Put company size in order
-CompanySize  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
+health$CompanySize  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
 #Create Cross-tab Table
-APbCS <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., CompanySize)
+APbCS <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., health$CompanySize)
 head(APbCS)
 ```
 
@@ -58,12 +58,13 @@ chisq.test(APbCS)
 ####Visualization of Data
 
 ```{r}
-ggplot(health, aes(CompanySize, health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)) + geom_jitter(height = .3, width = .3) + ggtitle("Anonymity Protections For Mental Health Services") + xlab("Company Size") + ylab("Is Anonymity Protected?") 
+t0 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") 
+t0
 ```
 
 ####Interpretation of Results 
 
-The table and chart above show that across all company sizes, most respondents indicate that they do not know what their current company's anonymity policy is towards those using mental health services.  For companies of 1-5 employees, the next most common answer is "No" (anonymity is not protected). However, for companies larger than 5 employees, the results appear fairly consistent, with the majority of respondents (60-70 percent) indicating that they do not know anonymity policies, a sizable minority of respondents saying that anonymity is protected (25-32 percent), and less than 10 percent of respondents in each group saying anonymity is not protected. Based off of the chi-squared test, it is not clear if there is a statistically significant difference in anonymity policies of companies of different sizes.  
+The table and chart above show that across all company sizes, most respondents indicate that they do not know what their current company's anonymity policy is towards those using mental health services.  For companies of 1-5 employees, the next most common answer is "No" (anonymity is not protected). However, for companies larger than 5 employees, the results appear fairly consistent, with the majority of respondents (60-70 percent) indicating that they do not know anonymity policies, a sizable minority of respondents saying that anonymity is protected (25-32 percent), and less than 10 percent of respondents in each group saying anonymity is not protected. Based off of the chi-squared test, it is not clear if there is a statistically significant difference in anonymity policies of companies of different sizes. However, the fact that the majority of respondents across company sizes do not know their company's anonymity policy is something that has to be addressed, as a study by Milne, et al (1994) has found that participants tended to be more confident in a company's Employee Assistance Program if they felt it was confidential (p. 141). Therefore, any outreach must make the company's anonymity policy clear. 
 
 ###Anonymity Policies by Whether it is a Tech Company
 
@@ -95,32 +96,19 @@ chisq.test(APbT2)
 
 ####Visualization of Data
 
-OPTION 1
-
 ```{r}
-ggplot(health, aes(TLabel, health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)) + geom_jitter(height = .3, width = .3) + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is Employer Primarily Tech?") + ylab("Is Anonymity Protected?") 
-```
-
-OPTION 2
-
-```{r}
-#Run Counts
-summary(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)
-#Modify Labels
-levels(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.) <- c("Don't Know Anonymity Policy", "Anonymity Not Protected", "Anonymity Protected")
-#Check to make sure
-summary(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)
-```
-
-```{r}
+#Create Labels for Tech Companies
+techlabel <- c(
+`0` = "Not Primarily a Tech Company",
+`1` = "Primarily a Tech Company")
 #Create Visualization
-p3 <- ggplot(health, aes(x = TLabel))+geom_bar()+facet_wrap(~ health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.)+ ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is Employer Primarily Tech?") + ylab("Count") 
-p3
+t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$Is.your.employer.primarily.a.tech.company.organization. ~ ., labeller = as_labeller(techlabel)) + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") 
+t1
 ```
 
 ####Interpretation of Results 
 
-The difference between primarily tech and non-primarily tech companies is not statistically significant in regards to anonymity policies for those seeking mental health services.  In both cases, the clear majority of those surveyed indicated that they do not know  their current company's anonymity policy is towards those using mental health services.  In both cases, the next most common response to the question is that anonymity is protected for those using mental health services.
+The difference between primarily tech and non-primarily tech companies is not statistically significant in regards to anonymity policies for those seeking mental health services.  However, this may be influenced by the fact that the majority of those surveyed work for primiarily tech-oriented companies, so we do not have a large sample of those working for non-tech companies.  Furthermore, we do not know the industry that these non-tech companies are in, which means we cannot draw any firm conclusions here.  Nevertheless, in both cases, the clear majority of those surveyed indicated that they do not know  their current company's anonymity policy is towards those using mental health services.  In both cases, the next most common response to the question is that anonymity is protected for those using mental health services. As described above, the fact the majority of respondents do not know their company's anonymity policy is something that has to be addressed. 
 
 ##Ease of Asking for Leave For A Mental Health Issue
 
@@ -129,9 +117,17 @@ This is important because if employees feel that asking for time off from work f
 ###Answers by Gender
 
 ```{r}
+#Modify Labels
+pd2 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
+labels = c("V Easy", "S Easy", "Neutral", "SW Hard", "V Hard", "Don't Know"))
+```
+
+```{r}
 #Crosstab table
-ELDbG <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$gender)
+ELDbG <- table(pd2, health$gender)
 ELDbG
+prop.table(ELDbG, 2)
 ```
 
 ####Chi-Squared 
@@ -142,6 +138,17 @@ We get a warning that the approximation may be incorrect, likely because some of
 chisq.test(ELDbG)
 ```
 
+####Visualization of Data
+
+```{r}
+#Create Visualization
+t2 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid(health$gender ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") 
+t2
+```
+
+####Interpretation of Results 
+
+Across all genders, the most common answer is "Somewhat Easy".  Interestingly, for women the second most common answer is "Somewhat Difficult", while for men the second most common answer is "Very Easy."  For those indicating their gender falls into another category, an equal amount indicated that they felt asking for leave was very hard or provided a neutral response ("neither easy or hard"). Across all genders there is a significant group of people indicating they find it somewhat to very hard to ask for leave. That being said, there are fewer women and those from other genders participating in this survey (compared to men), which may impact our results. Furthermore, the chi-squared test indicated that the approximation may be incorrect, likely because some of the values from the table are small.
 
 ###Answers by Age Group
 
@@ -154,108 +161,185 @@ health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels
 
 ```{r}
 #Crosstab table
-ELDbA <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$AgeGroup)
+ELDbA <- table(pd2, health$AgeGroup)
 ELDbA
+#Proportions table
+prop.table(ELDbA)
 ```
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information)
+####Chi-Squared
 
-###Chi-Squared
 ```{r}
 chisq.test(ELDbA)
 ```
 
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information)
+
+####Visualization of Data
+
+```{r}
+#Create Visualization
+t3 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid(health$AgeGroup ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Age Group") + xlab("Perceived Difficulty Level") + ylab("Count") 
+t3
+```
+
+####Interpretation of Results
+
+The most common response for those in the 17-27 and 37-57 age ranges is that asking for leave for a mental health issue was "Somewhat Easy" and the second most common isthat asking for leave "Very Easy".  However, there is a significant number in both age groups who provided a neutral answer (e.g., neither easy or difficult) or indicated that they felt asking for leave was hard/very hard. That being said, there are few people who are 57-77 participating in this survey and there are fewer people in the 37-57 age group than the 17-27 age group. Furthermore, the chi-squared test indicated that the approximation may be incorrect, likely because some of the values from the table are small (since few people fell into the 57-77 age range).  
 
 ###Answers by Company Size
 
 ```{r}
 #Crosstab table
-ELDbCS <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., ENumOrder)
+ELDbCS <- table(pd2, health$CompanySize)
 ELDbCS
+prop.table(ELDbCS, 2)
 ```
 
-###Chi-Squared
+####Chi-Squared
+
+Since the p value is less than .01, then we can say that there may be a significant difference in the answers to perceived ease for requesting leave by different company size groups.  
 
 ```{r}
 chisq.test(ELDbCS)
 ```
 
-
-###Answers by Whether Company is Primarily a Tech Company
-
-```{r}
-
-```
-
-####Chi-Squared
+####Visualization of Data
 
 ```{r}
-
+#Modify Labels
+pd3 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
+labels = c("E", "SE", "N", "SH", "H", "D"))
+#Create Visualization
+t4 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$CompanySize) + ggtitle("Perceived Difficulty of Asking for Leave by Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
+t4
 ```
 
-###Answers by Whether Anonymity Is Protected
+NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
 
-```{r}
+####Interpretation of Results
 
-```
-
-####Chi-Squared
-
-```{r}
-
-```
+For very small companies (1-5 employees), there seems to be a fairly even split between those who perceive taking leave for mental health to be easy and those who perceive it to be hard.  For other small companies (6-25 employees), approximately the same number of people say that it is easy/somewhat easy or provide a neutral response.  However, in this case, the most common answer is that they would perceive it as somehwat hard to ask for leave. For larger companies, the most common answer is that they perceive it to be somewhat easy to request leave for a mental illness.  Therefore it appears that as the company size gets larger, it may be perceived as easier in most companies to request leave related to a mental illness. However, there is still sizable minority of employees who work for larger companies (over 25 employees) who do perceive it as hard or very hard to ask for leave. Therefore, a lot may vary by the company.    
 
 ###Answers by Whether Current Company Provides Mental Health Benefits
 
 ```{r}
+#Modify Labels
+health$mhb2 <- factor(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.,
+levels = c("I don't know", "No", "Not eligible for coverage / N/A","Yes"),
+labels = c("Don't Know", "No", "Ineligible/NA", "Yes"))
 #Crosstab Table
-ELDbMHB <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+ELDbMHB <- table(pd2, health$mhb2)
 ELDbMHB
 ```
 
-###Chi-Squared
+####Chi-Squared
+
+Because the p value is not less than .01 we do not reject the null (there are no differences between categories). 
 
 ```{r}
 chisq.test(ELDbMHB)
 ```
 
+####Create Visualization
+
+```{r}
+t5 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
+t5
+```
+NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
+
+
 ###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
 
 ```{r}
-ELDbEDM <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+ELDbEDM <- table(pd2, health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
 ELDbEDM
 ```
 
 ####Chi-Squared
 
+Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
+
 ```{r}
 chisq.test(ELDbEDM)
 ```
 
+####Create Visualization
+
+```{r}
+t6 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Discussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count")
+t6
+```
+
+####Interpretation of Results
+
+Across all categories (e.g., yes they have discussed, no they haven't, don't know), the most common response is that most recipients think it would be somewhat easy to request leave. Interestingly, for those who did not know if there has been a discussion, a large contingent also indicated they don't know how hard it would be to request leave.  For those where there has been a discussion, far fewer people say it would be hard to request leave to handle a mental illness than those who say it would be easy to very easy. For those where there has not been a discussion (which is the majority of respondents), the second most common answer is that it would be somewhat hard to request leave to hanlde a mental illness.  
+
 ###Answers by Whether Current Company Offers Other Resources
 
 ```{r}
-ELDbEOR <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+ELDbEOR <- table(pd2, health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
 ELDbEOR
 ```
 
 ####Chi-Squared 
 
+Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
+
 ```{r}
 chisq.test(ELDbEOR)
 ```
 
+####Create Visualization
+
+```{r}
+t7 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
+t7
+```
+
+####Interpretation of Results
+
+Across all categories (e.g., yes there are resources, no they aren't, don't know), the most common response is that most recipients think it would be somewhat easy to request leave. Similarly to the results provided above, in companies where there are other resources provided, fewer people say it would be hard to request leave to handle a mental illness than those who say it would be easy to very easy. For those where there are not additional resources offered related to mental health (the majority of respondents), the second most common answer is that it would be somewhat hard to request leave to hanlde a mental illness. 
+
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-ELDbPR <- table(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+ELDbPR <- table(pd2, health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
 ELDbPR
+prop.table(ELDbPR, 2)
+```
+
+#Revise Labels
+
+```{r}
+#Modify Labels
+health$epr <- factor(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.,
+levels = c("Maybe/Not sure", "N/A", "No","Yes, I experienced", "Yes, I observed"),
+labels = c("Don't Know", "N/A", "No", "Yes, experienced", "Yes, observed"))
+table(pd2, health$epr)
 ```
 
 ####Chi-Squared
+
+Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
+
 ```{r}
 chisq.test(ELDbPR)
 ```
+
+####Create Visualization
+
+```{r}
+t8 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$epr) + ggtitle("Perceived Difficulty of Asking for Leave by Exp. with Poor MH Response") + xlab("Perceived Difficulty Level") + ylab("Count")
+t8
+```
+NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
+
+####Interpretation of Results
+
+Most people surveyed indicate that they have never had an experience with an unsupportive or badly handled response to mental health in the workplace.  Among those who selected this response, the vast majority indicate they think that it would be very or somewhat easy to request leave to handle a mental illness.  For those who have observed a badly handled response, the most common response is that they would find it somewhat easy to request leave, but the second most common is that it they would find it somewhat difficult.  For those who have experienced a poorly handled response, the most common response is that they would find it somewhat easy to request leave, but a significant amount said they would find it hard or very hard to request leave (or provided a neutral response saying it would be neither easy or difficult). Therefore, it is possible that experience with a poorly handled response may have an impact on perceived ease of requesting leave.  
 
 ##Comfort with talking to Supervisor About Mental Health
 
@@ -289,64 +373,13 @@ chisq.test(MHbA)
 
 ###Answers by Company Size
 ```{r}
-MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., ENumOrder)
+MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$CompanySize)
 MHbCS
 ```
 
 ####Chi-Squared
 ```{r}
 chisq.test(MHbCS)
-```
-
-###Answers by Whether Company is Primarily a Tech Company
-
-```{r}
-
-```
-
-###Answers by Whether Anonymity Is Protected
-
-```{r}
-
-```
-
-###Answers by Whether Current Company Provides Mental Health Benefits
-
-```{r}
-MHbMHB <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
-MHbMHB
-```
-
-####Chi-Squared
-```{r}
-chisq.test(MHbMHB)
-```
-
-
-###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
-
-```{r}
-MHbEDM <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
-MHbEDM
-```
-
-####Chi-Squared
-
-```{r}
-chisq.test(MHbEDM)
-```
-
-###Answers by Whether Current Company Offers Other Resources
-
-```{r}
-MHbEOR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
-MHbEOR
-```
-
-####Chi-Squared
-
-```{r}
-chisq.test(MHbEOR)
 ```
 
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
@@ -399,62 +432,12 @@ chisq.test(MHCbA)
 ###Answers by Company Size
 
 ```{r}
-MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., ENumOrder)
+MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$CompanySize)
 MHCbCS
 #Proportions (as column percentages)
 prop.table(MHCbCS, 2)
 #Chi-Squared (the p value is small)
 chisq.test(MHCbCS)
-```
-
-###Answers by Whether Company is Primarily a Tech Company
-
-```{r}
-
-```
-
-###Answers by Whether Anonymity Is Protected
-
-```{r}
-
-```
-
-###Answers by Whether Current Company Provides Mental Health Benefits
-
-```{r}
-MHCbMHB <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
-MHCbMHB
-```
-
-####Chi-Squared
-
-```{r}
-chisq.test(MHCbMHB)
-```
-
-###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
-
-```{r}
-MHCbEDM <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
-MHCbEDM
-```
-
-####Chi-Squared
-```{r}
-chisq.test(MHCbEDM)
-```
-
-###Answers by Whether Current Company Offers Other Resources
-
-```{r}
-MHCbEOR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
-MHCbEOR
-```
-
-####Chi-Squared
-
-```{r}
-chisq.test(MHCbEOR)
 ```
 
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
@@ -482,3 +465,6 @@ MHCbCN
 chisq.test(MHCbCN)
 ```
 
+#Works Cited
+
+Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees’ Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123–145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
