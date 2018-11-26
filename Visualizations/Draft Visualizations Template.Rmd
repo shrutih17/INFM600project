@@ -1,5 +1,5 @@
 ---
-title: "Draft Visualizationa for Semester Project"
+title: "Draft Visualizations for Semester Project"
 output: word_document
 ---
 
@@ -55,6 +55,8 @@ prop.table(APbCS, 2)
 chisq.test(APbCS)
 ```
 
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are small. Therefore, we cannot draw and conclusions for this test about whether these two variables are related.
+
 ####Visualization of Data
 
 ```{r}
@@ -64,7 +66,7 @@ t0
 
 ####Interpretation of Results 
 
-The table and chart above show that across all company sizes, most respondents indicate that they do not know what their current company's anonymity policy is towards those using mental health services.  For companies of 1-5 employees, the next most common answer is "No" (anonymity is not protected). However, for companies larger than 5 employees, the results appear fairly consistent, with the majority of respondents (60-70 percent) indicating that they do not know anonymity policies, a sizable minority of respondents saying that anonymity is protected (25-32 percent), and less than 10 percent of respondents in each group saying anonymity is not protected. Based off of the chi-squared test, it is not clear if there is a statistically significant difference in anonymity policies of companies of different sizes. However, the fact that the majority of respondents across company sizes do not know their company's anonymity policy is something that has to be addressed, as a study by Milne, et al (1994) has found that participants tended to be more confident in a company's Employee Assistance Program if they felt it was confidential (p. 141). Therefore, any outreach must make the company's anonymity policy clear. 
+The table and chart above show that across all company sizes, most respondents indicate that they do not know what their current company's anonymity policy is towards those using mental health services.  For companies of 1-5 employees, the next most common answer is "No" (anonymity is not protected). However, for companies larger than 5 employees, the results appear fairly consistent, with the majority of respondents (60-70 percent) indicating that they do not know anonymity policies, a sizable minority of respondents saying that anonymity is protected (25-32 percent), and less than 10 percent of respondents in each group saying anonymity is not protected. Based off of the chi-squared test, it is not clear if there is a statistically significant difference in anonymity policies of companies of different sizes. However, the fact that the majority of respondents across company sizes do not know their company's anonymity policy is something that has to be addressed in any outreach program, as a study by Milne, et al (1994) has found that participants tended to be more confident in a company's Employee Assistance Program if they felt it was confidential (p. 141). Therefore, any outreach must make the company's anonymity policy clear. 
 
 ###Anonymity Policies by Whether it is a Tech Company
 
@@ -88,6 +90,8 @@ prop.table(APbT2, 2)
 ```
 
 ####Chi-Squared Test 
+
+This chi-squared test's p value is very large. Therefore, there is likelt not a relationship between these two variables.  
 
 ```{r}
 #Do a chi-squared test
@@ -198,11 +202,11 @@ prop.table(ELDbCS, 2)
 
 ####Chi-Squared
 
-Since the p value is less than .01, then we can say that there may be a significant difference in the answers to perceived ease for requesting leave by different company size groups.  
-
 ```{r}
 chisq.test(ELDbCS)
 ```
+
+Because the p value is less than .01 we can reject the null and say that we think that there is a relationship between these two variables.
 
 ####Visualization of Data
 
@@ -236,11 +240,11 @@ ELDbMHB
 
 ####Chi-Squared
 
-Because the p value is not less than .01 we do not reject the null (there are no differences between categories). 
-
 ```{r}
 chisq.test(ELDbMHB)
 ```
+
+Because the p value is not less than .01 we cannot reject the null. The null variables is that there is no relationship between these two variables.
 
 ####Create Visualization
 
@@ -260,11 +264,11 @@ ELDbEDM
 
 ####Chi-Squared
 
-Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
-
 ```{r}
 chisq.test(ELDbEDM)
 ```
+
+Because the p value is less than .01 we can reject the null and say that we think that there is a relationship between these two variables.
 
 ####Create Visualization
 
@@ -323,11 +327,11 @@ table(pd2, health$epr)
 
 ####Chi-Squared
 
-Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
-
 ```{r}
 chisq.test(ELDbPR)
 ```
+
+Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
 
 ####Create Visualization
 
@@ -350,6 +354,7 @@ This is important because if an employee has a mental health issue, they should 
 ```{r}
 MHbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$gender)
 MHbG
+prop.table(MHbG, 2)
 ```
 
 ####Chi-Squared
@@ -358,11 +363,25 @@ MHbG
 chisq.test(MHbG)
 ```
 
+The p value is very large.  Therefore, we cannot reject the null hypothesis. The null hypothesis is that these two variables are indepdendent (no relationship between them)
+
+####Create Visualization
+
+```{r}
+t9 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(~ health$gender) + ggtitle("Comfort with Discussing MH with Supervisor by Gender") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
+t9
+```
+
+####Interpretation of Results
+
+Most respondents across genders indicate that they would be comfortable discussing a mental health disorder with their supervisors. With male employees, a lower proportion indicate that they would not be comfortable discussing a mental health disorder with their supervisors. Meanwhile, with female and employees of other genders, the results are slightly more evenly split among the three options.  However, the difference is not statistically significant. 
+
 ###Answers by Age Group
 
 ```{r}
 MHbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$AgeGroup)
 MHbA
+prop.table(MHbA, 2)
 ```
 
 ####Chi-Squared
@@ -370,6 +389,19 @@ MHbA
 ```{r}
 chisq.test(MHbA)
 ```
+
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information).
+
+####Create Visualization
+
+```{r}
+t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
+t10
+```
+
+####Interpretation of Results
+
+Survey respondents in the 17-37 and 37-57 age groups are about evenly split among stating they would feel comfortable discussing a mental health disorder with their supervisor, those who say they would not, and those who say they might. In both cases, the majority say they would feel comfortable.  The next most common response is maybe, and no received the least amount of responses. However, in both cases over a quarter of participants in both age groups answered that they would not feel comfortable.  The 57-77 range has a low number of responses, although in that case "No" is the second most common reponse.  Given the chi-squared test results and the visualization, it does not appear that age has much of an impact on comfort level in discussing a mental health disorder with a supervisor. However, the fact that there are fewer responses from the 37-57 and especially the 57-77 age groups may impact our results. 
 
 ###Answers by Company Size
 ```{r}
@@ -425,6 +457,11 @@ MHCbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.diso
 MHCbA
 #Proportions (as column percentages)
 prop.table(MHCbA, 2)
+```
+
+####Chi-Squared 
+
+```{r}
 #Chi-Squared (We get a big chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
 chisq.test(MHCbA)
 ```
@@ -436,6 +473,11 @@ MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.dis
 MHCbCS
 #Proportions (as column percentages)
 prop.table(MHCbCS, 2)
+```
+
+####Chi-Squared
+
+```{r}
 #Chi-Squared (the p value is small)
 chisq.test(MHCbCS)
 ```
