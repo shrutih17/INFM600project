@@ -74,13 +74,17 @@ The table and chart above show that across all company sizes, most respondents i
 
 ```{r}
 #Add labels to tech company org
-TLabel <- factor(health$Is.your.employer.primarily.a.tech.company.organization.,
+health$TLabel <- factor(health$Is.your.employer.primarily.a.tech.company.organization.,
 levels = c(0, 1),
-labels = c("No", "Yes"))
+labels = c("Not primarily tech", "Primarily Tech"))
+```
+
+```{r}
 #Create a crosstab table
-APbT2 <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., TLabel)
+APbT2 <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., health$TLabel)
 head(APbT2)
 ```
+
 
 ####Proportions table
 
@@ -101,12 +105,8 @@ chisq.test(APbT2)
 ####Visualization of Data
 
 ```{r}
-#Create Labels for Tech Companies
-techlabel <- c(
-`0` = "Not Primarily a Tech Company",
-`1` = "Primarily a Tech Company")
 #Create Visualization
-t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$Is.your.employer.primarily.a.tech.company.organization. ~ ., labeller = as_labeller(techlabel)) + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") 
+t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") 
 t1
 ```
 
@@ -121,15 +121,19 @@ This is important because if employees feel that asking for time off from work f
 ###Answers by Gender
 
 ```{r}
-#Modify Labels
-pd2 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+#Modify Labels (ideal if we can get it to fit)
+health$pd2 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
 levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
-labels = c("V Easy", "S Easy", "Neutral", "SW Hard", "V Hard", "Don't Know"))
+labels = c("Very easy (VE)", "Somewhat Easy (SE)", "Neutral (N)", "Somewhat Hard (SH)", "Very Hard (VH)", "Don't Know (DK)"))
+#Modify Labels (if health$pd2 does not fit, use this as an alternate)
+health$pd3 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
+labels = c("VE", "SE", "N", "SH", "VH", "DK"))
 ```
 
 ```{r}
 #Crosstab table
-ELDbG <- table(pd2, health$gender)
+ELDbG <- table(health$pd2, health$gender)
 ELDbG
 prop.table(ELDbG, 2)
 ```
@@ -146,9 +150,10 @@ chisq.test(ELDbG)
 
 ```{r}
 #Create Visualization
-t2 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid(health$gender ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") 
+t2 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$gender ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") 
 t2
 ```
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results 
 
@@ -165,7 +170,7 @@ health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels
 
 ```{r}
 #Crosstab table
-ELDbA <- table(pd2, health$AgeGroup)
+ELDbA <- table(health$pd2, health$AgeGroup)
 ELDbA
 #Proportions table
 prop.table(ELDbA)
@@ -183,9 +188,10 @@ We get a warning that the approximation may be incorrect, likely because some of
 
 ```{r}
 #Create Visualization
-t3 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid(health$AgeGroup ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Age Group") + xlab("Perceived Difficulty Level") + ylab("Count") 
+t3 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$AgeGroup ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Age Group") + xlab("Perceived Difficulty Level") + ylab("Count") 
 t3
 ```
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
@@ -195,7 +201,7 @@ The most common response for those in the 17-27 and 37-57 age ranges is that ask
 
 ```{r}
 #Crosstab table
-ELDbCS <- table(pd2, health$CompanySize)
+ELDbCS <- table(health$pd2, health$CompanySize)
 ELDbCS
 prop.table(ELDbCS, 2)
 ```
@@ -211,16 +217,12 @@ Because the p value is less than .01 we can reject the null and say that we thin
 ####Visualization of Data
 
 ```{r}
-#Modify Labels
-pd3 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
-levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
-labels = c("E", "SE", "N", "SH", "H", "D"))
 #Create Visualization
-t4 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$CompanySize) + ggtitle("Perceived Difficulty of Asking for Leave by Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
+t4 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$CompanySize~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
 t4
 ```
 
-NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
@@ -229,12 +231,15 @@ For very small companies (1-5 employees), there seems to be a fairly even split 
 ###Answers by Whether Current Company Provides Mental Health Benefits
 
 ```{r}
-#Modify Labels
+#Modify Labels for mental health benefit provision
 health$mhb2 <- factor(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.,
 levels = c("I don't know", "No", "Not eligible for coverage / N/A","Yes"),
 labels = c("Don't Know", "No", "Ineligible/NA", "Yes"))
+```
+
+```{r}
 #Crosstab Table
-ELDbMHB <- table(pd2, health$mhb2)
+ELDbMHB <- table(health$pd2, health$mhb2)
 ELDbMHB
 ```
 
@@ -249,16 +254,19 @@ Because the p value is not less than .01 we cannot reject the null. The null var
 ####Create Visualization
 
 ```{r}
-t5 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
+t5 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
 t5
 ```
-NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
+####Interpretation of Results
+
+For those who do not get mental health benefits, more participants responded that they perceive it as somewhat difficult to request leave for a mental health issue than any other response (with somewhat easy being the second most common).  Among those who do get mental health benefits, most indicated they perceive it as very easy or somwhat easy to request leave for a mental health issue. Most of those who did not know if mental health benefits are offered inidicated they perceived it to be somewhat easy to request leave for a mental health issue. Those who are ineligible (or for whom it was not applicable) were evently split among the responses, although relatively few people selected this response compared to the others. However, the difference between the two variables does not appear to be statistically significant.  
 
 ###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
 
 ```{r}
-ELDbEDM <- table(pd2, health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+ELDbEDM <- table(health$pd2, health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
 ELDbEDM
 ```
 
@@ -273,9 +281,10 @@ Because the p value is less than .01 we can reject the null and say that we thin
 ####Create Visualization
 
 ```{r}
-t6 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Discussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count")
+t6 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Discussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count")
 t6
 ```
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
@@ -284,7 +293,7 @@ Across all categories (e.g., yes they have discussed, no they haven't, don't kno
 ###Answers by Whether Current Company Offers Other Resources
 
 ```{r}
-ELDbEOR <- table(pd2, health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+ELDbEOR <- table(health$pd2, health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
 ELDbEOR
 ```
 
@@ -299,9 +308,10 @@ chisq.test(ELDbEOR)
 ####Create Visualization
 
 ```{r}
-t7 <- ggplot(health, aes(x = pd2))+geom_bar()+facet_grid( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
+t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
 t7
 ```
+NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
@@ -310,7 +320,7 @@ Across all categories (e.g., yes there are resources, no they aren't, don't know
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-ELDbPR <- table(pd2, health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+ELDbPR <- table(health$pd2, health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
 ELDbPR
 prop.table(ELDbPR, 2)
 ```
@@ -318,11 +328,11 @@ prop.table(ELDbPR, 2)
 #Revise Labels
 
 ```{r}
-#Modify Labels
+#Modify Labels for unsupportive response to make them shorter
 health$epr <- factor(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.,
 levels = c("Maybe/Not sure", "N/A", "No","Yes, I experienced", "Yes, I observed"),
 labels = c("Don't Know", "N/A", "No", "Yes, experienced", "Yes, observed"))
-table(pd2, health$epr)
+table(health$pd2, health$epr)
 ```
 
 ####Chi-Squared
@@ -336,7 +346,7 @@ Because the p value is less than .01 we can reject the null and say that we thin
 ####Create Visualization
 
 ```{r}
-t8 <- ggplot(health, aes(x = pd3))+geom_bar()+facet_grid(~ health$epr) + ggtitle("Perceived Difficulty of Asking for Leave by Exp. with Poor MH Response") + xlab("Perceived Difficulty Level") + ylab("Count")
+t8 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$epr ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Exp. with Poor MH Response") + xlab("Perceived Difficulty Level") + ylab("Count")
 t8
 ```
 NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
@@ -395,7 +405,7 @@ We get a warning that the approximation may be incorrect, likely because some of
 ####Create Visualization
 
 ```{r}
-t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
+t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
 t10
 ```
 
