@@ -441,7 +441,7 @@ The pattern that we see in the data visualization is interesting.  For companies
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-MHbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+MHbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
 MHbPR
 prop.table(MHbPR, 2)
 ```
@@ -451,6 +451,17 @@ prop.table(MHbPR, 2)
 ```{r}
 chisq.test(MHbPR)
 ```
+
+####Create Visualization
+
+```{r}
+t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing MH w/ Supervisor by Exp. w/ Poor Workplace Response") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
+t17
+```
+
+####Interpret Results
+
+When asked about experience with a poorly handled response to mental health, respondents who were not sure if they expereinced it were evenly split between answering that they maybe comfortable discussing a mental health disorder with supervisors or not comfortable (there was also a large group that said they would be comfortable).  For those who answered that they did not have experience with a poor response, they also answered yes more often than maybe and no when also asked about their comfort with discussing a mental health disorder with a supervisor. Interestingly, those who stated "Yes, I observed" a poor response to mental health in the workplace were evenly split selected maybe the most often when also asked if they would feel comfortable discussing a mental health disorder with coworkers (and "yes" was the second most common response). However, those who stated that they experienced a poorly handled response were evenly split between the yes, no, and maybe answers when asked about comfort level discussing mental health with a supervisor.    
 
 ###Answers by If They Think Discussing a Mental Health Disorder with Employer Would Have Negative Consequences
 
@@ -532,7 +543,6 @@ prop.table(MHCbA, 2)
 ####Chi-Squared 
 
 ```{r}
-#Chi-Squared (We get a big chi-quared and a warning it may be incorrect, likely b/c small values for the 57-77 column)
 chisq.test(MHCbA)
 ```
 
@@ -565,6 +575,19 @@ prop.table(MHCbCS, 2)
 chisq.test(MHCbCS)
 ```
 
+The chi-squared test shows a p value that is less than 0.01.  Therefore, we can reject the null hypothesis (that there is no relationship between these variables). This indicates that there may be a relationship between company size and comfort level with talking to coworkers about a mental health issue.
+
+####Create Visualization
+
+```{r}
+t15 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Coworkers by Company Size") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
+t15
+```
+
+####Interpret Results
+
+Respondents from companies with 1-5 employees are roughly evenly split among the three responses (yes, no, maybe) when asked if they would feel comfortable discussing a mental health disorder with coworkers.  Results are similar with companies for 6-25 employees, but a lower proportion of employees in that category indicate they would be comfortable.  For the 26-100 and 100-500 employee companies, most indicate that they may be comfortable with "no" being the second most common response. Respondents from companies with 500-1000 employees also select maybe the most often, but "yes" is the second most common response. Finally, respondents from companies with more than 1000 employees select the "no" answer the most often, with maybe being the second most common.  The results indicate that there may be a relationship between company size and willingness to talk to coworkers about mental illness. However, the variation in responses also indicates that the reasons for the comfort, discomfort, or uncertainty may vary by company.  
+
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
@@ -577,6 +600,19 @@ MHCbPR
 ```{r}
 chisq.test(MHCbPR)
 ```
+
+The chi-squared test shows a p value that is less than 0.01.  Therefore, we can reject the null hypothesis (that there is no relationship between these variables). This indicates that there may be a relationship between experience with a poor response to a mental health issue with talking to coworkers about a mental health issue.
+
+####Create Visualization
+
+```{r}
+t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort Discussing MH w/ Coworkers by Exp. w/ Poor Workplace MH Response") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
+t16
+```
+
+####Interpret Results
+
+When asked about experience with a poorly handled response to mental health, respondents across all categories except for "N/A" (which had relatively few respondents), also answered that they maybe comfortable discussing a mental health disorder with coworkers. Interestingly, those who stated "Yes, I observed" a poor response to mental health in the workplace were evenly split between the maybe and no answers when also asked if they would feel comfortable discussing a mental health disorder with coworkers. However, those who stated that they experienced a poorly handled response selected "Maybe" most often when also asked if they would feel comfortable discussing a mental health disorder with coworkers.  The remainder were about evenly split between the "no" and "yes" answers.  This may indicate that observing a poorly handled response to a mental health issue in the workplace may have a greater negative effect on willingness to discuss with coworkers than those experiencing it. 
 
 ###Answers by If They Think Coworkers Would View Them Negatively If They Knew You Suffered From a Mental Health Issue
 
