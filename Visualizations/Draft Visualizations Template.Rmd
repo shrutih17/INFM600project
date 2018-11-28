@@ -8,14 +8,171 @@ output: word_document
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(grid)
+library(gridExtra)
 health <- read.csv("mentalsurvey_clean.csv")
 ```
 
 #Section 1: Showing that Mental and Behavioral Health Issues Impact Workers
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+###Distribution of Mental health disorders
+```{r}
+
+#since some people have multiple disorders, we have to split them 
+tmp = health %>% separate(mhd, 
+                          sep = '\\|',
+                          c('mhd_1', 'mhd_2', 'mhd_3', 'mhd_4', 'mhd_5',
+                            'mhd_6', 'mhd_7', 'mhd_8', 'mhd_9'),
+                          fill = 'right')
+
+
+chk = tmp %>% select(matches('mhd_[1-9]'))
+
+comb = as.vector(t(chk))
+comb1 = comb[comb != ""&!is.na(comb)]
+
+#Shortening the factor levels by splitting
+disorders=sapply(strsplit(comb1, split = " \\("), `[`, 1)
+dataf <- as.data.frame(matrix(disorders))
+colnames(dataf)<- "Disorder"
+#Removing inconsistent response
+subdataf <- subset(dataf, disorders != "I haven\'t been formally diagnosed, so I felt uncomfortable answering, but Social Anxiety and Depression.")
+count_disorder <-data.frame(count(subdataf, Disorder, sort = TRUE))
+count_disorder
 ```
+
+```{r}
+
+reorder_size <- function(x) {
+  factor(x, levels = names(sort(table(x), decreasing = TRUE)))
+}
+#Plot to see the distribution of current mental health illness
+p <- ggplot(data=subdataf, aes(x = reorder_size(Disorder)))+
+  geom_bar(fill='dark blue')+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+p+xlab("Current Mental health disorders")+ggtitle("Distribution of Mental health disorders currently")
+```
+
+####Interpretation of Results 
+
+The most common mental health disorder appears to be mood disorder with a count of 325, followed by anxiety disorder with a count of 272.
+
+###Distribution of mental health status among gender
+
+```{r}
+gender_disorder <- table(health$Do.you.currently.have.a.mental.health.disorder., health$gender)
+gender_disorder
+```
+```{r}
+#Table: % of who may, don't or have mental disorder among genders
+rowprop <- prop.table(gender_disorder,1) 
+rowprop
+```
+
+```{r}
+dr1 <-as.data.frame(rowprop)
+# Distribution of respondents among gender provided they may/have/donot have a mental diorder 
+ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution of mental health status among genders (1)')
+```
+
+####Interpretation of results 
+
+The table and figure above shows that among the people that said Yes, 32.3% are females, 63.4% are males and 4.2% are otherss. Among the people that said No, 81.4% are males, 18.3% are females and 0.2% are others.Among the people that said Maybe, 79.5% are males, 17.3% are females and 3.1% are others.
+
+```{r}
+#Table : % of each level gender who may, don't or have mental disorder
+colprop <- prop.table(gender_disorder,2)
+colprop
+```
+```{r}
+# Distribution of respondents who may/have/donot have a mental diorder over the gender
+dr2 <-as.data.frame(colprop)
+ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = NULL, y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status among genders (2)')
+```
+
+####Interpretation of results 
+
+The table and figure above show that the proportion of females who said Yes (0.53) are more than the proportion of females that said no (0.29) amd maybe (0.16). The proportion of males that said No (0.42) are more than the proportion of males who said Yes (0.33) and Maybe (0.23). In the gender Other, the proportion that said Yes (0.67) are more than the proportion that said No (0.03) and Maybe (0.28).
+
+###
+```{r}
+summary(health$age)
+```
+```{r}
+#Creating lavbels for age groups
+labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
+                sep = "-"))
+health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
+
+agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
+ageprop <- prop.table(agegr,2)
+ageprop
+```
+```{r}
+dfageprop <- as.data.frame(ageprop)
+
+#Distribution of respondents reporting a mental disorder by age groups
+ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
+```
+
+####Interpretation of results
+
+The table and plot above show that in the age group of 17-37, 40% said they currently have a mental disorder, 38% said they donot have a mental disorder currently and 21.9% said are not sure. In the 37-57 age group, 39.4% said they donot have a mental disorder currently, 37.3% said Yes and 23.2% said maybe or are not sure. In the 57-77 agegroup, 50% said Yes, 41.6% said No and 8.3% said maybe. 
+```{r}
+ageprop1 <- prop.table(agegr,1)
+ageprop1
+```
+
+```{r}
+dfageprop1 <- as.data.frame(ageprop1)
+ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
+```
+
+####Interepretion of results
+
+The table and plot above show that among the people that said they have mental disorder currently, 71.6% lie in the 17-37 age group, 27% lie in the 37-57 age group and 1.3% lie in the age group of 57-77. Among the people that said No, 69.6% lie in the 17-37 age group, 29.2% lie in the 37-57 age group and 1.1% lie in the 57-77 group. Among the people that said Maybe, 69.6% liein the 17-37 age group, 29.9% lie in the 37-57 age group and .3% lie in the 57-77 age group.
+
+###Potential Negative Consequences for Discussing Health Issues with Employer: Physical vs. Mental
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+#Creating a table with gender and mental health responses
+tab <- table(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences., health$gender)
+tab
+```
+```{r}
+#Creating a table with gender and physical health responses
+tab1 <- table(health$Do.you.think.that.discussing.a.physical.health.issue.with.your.employer.would.have.negative.consequences., health$gender)
+tab1
+```
+```{r}
+#creating the combined plot
+tabdf <- as.data.frame(tab)
+tab1df <- as.data.frame(tab1)
+
+plot1 <- ggplot(data = tabdf, aes(x = Var1, y =Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Mental health disorders", y = 'count')+ theme(legend.position='none')
+
+plot2 <- ggplot(data = tab1df, aes(x = Var1, y =Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Physical health disorders", y = 'count', fill = 'Gender')
+title1=textGrob("Negative consequences: Mental vs Physial", gp=gpar(fontface="bold"))
+grid.arrange(plot1, plot2,ncol=2,top = title1, widths = c(3/4,1))
+```
+
+####Interpretation of Results 
+
+The figure above shows that majority of people are certain that discussing physical health issues with their employers will not result in negative consequences. Very few believe that discussing physical health issues will have negative consequences. The responses to whether discussing mental health disorders with employers will result in negative consequences is more divided. Some people believe that discussing mental health disorders will have a negative consequence. This is probably due to the stigma at workplace which may make them believe that they might face negative consequences if their mental issues are brought infront of a employer. However, there are still more people who believe there won't be any negative consequences. This could be because they have already developed a smooth employer-employee relationship. There are comparatively more number of people who are unsure of whether or not there would be any negative consequences if mental health disorders are discussed with their employers.
 
 #Section 2: What are Other Companies Doing to Assist workers with Mental and Behavioral Health Policies
 
@@ -641,4 +798,4 @@ In this visualization we see that perceived impact of discussing a mental health
 
 #Works Cited
 
-Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees’ Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123–145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
+Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees??? Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123???145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
