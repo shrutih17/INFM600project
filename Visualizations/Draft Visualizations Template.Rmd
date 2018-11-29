@@ -13,10 +13,11 @@ library(gridExtra)
 health <- read.csv("mentalsurvey_clean.csv")
 ```
 
-#Section 1: Showing that Mental and Behavioral Health Issues Impact Workers
+#Section 1: Distribution of mental health disorders based on different demographics
 
 
 ###Distribution of Mental health disorders
+
 ```{r}
 
 #since some people have multiple disorders, we have to split them 
@@ -100,12 +101,13 @@ ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) +
 
 The table and figure above show that the proportion of females who said Yes (0.53) are more than the proportion of females that said no (0.29) amd maybe (0.16). The proportion of males that said No (0.42) are more than the proportion of males who said Yes (0.33) and Maybe (0.23). In the gender Other, the proportion that said Yes (0.67) are more than the proportion that said No (0.03) and Maybe (0.28).
 
-###
+###Distribution of mental health disorder based on age groups
+
 ```{r}
 summary(health$age)
 ```
 ```{r}
-#Creating lavbels for age groups
+#Creating labels for age groups
 labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
                 sep = "-"))
 health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
@@ -142,7 +144,19 @@ ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) +
 
 The table and plot above show that among the people that said they have mental disorder currently, 71.6% lie in the 17-37 age group, 27% lie in the 37-57 age group and 1.3% lie in the age group of 57-77. Among the people that said No, 69.6% lie in the 17-37 age group, 29.2% lie in the 37-57 age group and 1.1% lie in the 57-77 group. Among the people that said Maybe, 69.6% liein the 17-37 age group, 29.9% lie in the 37-57 age group and .3% lie in the 57-77 age group.
 
-###Potential Negative Consequences for Discussing Health Issues with Employer: Physical vs. Mental
+
+#Section 2: What are Other Companies Doing to Assist workers with Mental and Behavioral Health Policies
+
+```{r}
+
+```
+
+#Section 3: What are Factors that Might Limit the Impact of Behavioral Health Outreach
+
+###Potential Negative Consequences for discussing Health Issues with Employer: Physical vs. Mental
+
+If employees feel that discussing physical or mental health issues would have negative consequences. If so, they may be less likely to reach out for help. 
+
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 #Creating a table with gender and mental health responses
@@ -172,15 +186,7 @@ grid.arrange(plot1, plot2,ncol=2,top = title1, widths = c(3/4,1))
 
 ####Interpretation of Results 
 
-The figure above shows that majority of people are certain that discussing physical health issues with their employers will not result in negative consequences. Very few believe that discussing physical health issues will have negative consequences. The responses to whether discussing mental health disorders with employers will result in negative consequences is more divided. Some people believe that discussing mental health disorders will have a negative consequence. This is probably due to the stigma at workplace which may make them believe that they might face negative consequences if their mental issues are brought infront of a employer. However, there are still more people who believe there won't be any negative consequences. This could be because they have already developed a smooth employer-employee relationship. There are comparatively more number of people who are unsure of whether or not there would be any negative consequences if mental health disorders are discussed with their employers.
-
-#Section 2: What are Other Companies Doing to Assist workers with Mental and Behavioral Health Policies
-
-```{r}
-
-```
-
-#Section 3: What are Factors that Might Limit the Impact of Behavioral Health Outreach
+The figure above shows that majority of people are certain that discussing physical health issues with their employers will not result in negative consequences. Very few believe that discussing physical health issues will have negative consequences. The responses to whether discussing mental health disorders with employers will result in negative consequences is more divided. Some people believe that discussing mental health disorders will have a negative consequence. This is probably due to the stigma at workplace which may make them believe that they might face negative consequences if their mental issues are brought infront of a employer. This will make them less likely to reach out for help, discuss their issues with their employers, take time off work. However, there are still more people who believe there won't be any negative consequences. This could be because they have already developed a smooth employer-employee relationship. There are comparatively more number of people who are unsure of whether or not there would be any negative consequences if mental health disorders are discussed with their employers.
 
 ##Anonymity Policies 
 

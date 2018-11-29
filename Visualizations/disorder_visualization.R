@@ -119,6 +119,7 @@ labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
 labs
 health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
 View(health$AgeGroup)
+write.csv(health, "output.csv")
 
 agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
 ageprop <- prop.table(agegr,2)
