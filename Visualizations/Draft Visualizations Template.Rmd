@@ -1,5 +1,5 @@
 ---
-title: "Draft Visualizations for Semester Project"
+title: "Analysis File and R Plots"
 output: word_document
 ---
 
@@ -470,7 +470,7 @@ chisq.test(ELDbEOR)
 ####Create Visualization
 
 ```{r}
-t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
+t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by MH Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count")
 t7
 ```
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
@@ -655,7 +655,7 @@ table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with
 
 
 ```{r}
-t12 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Supervisor by Perception of Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
+t12 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Supervisor by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count")
 t12
 ```
 
@@ -686,7 +686,7 @@ The chi-squared is very large.  Therefore, we cannot reject the null hypothesis 
 ####Create Visualization
 
 ```{r}
-t13 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Coworkers by Gender") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
+t13 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Coworkers by Gender") + xlab("Would you feel comfortable discussing a MH disorder with your coworkers?") + ylab("Count")
 t13
 ```
 
@@ -769,7 +769,7 @@ The chi-squared test shows a p value that is less than 0.01.  Therefore, we can 
 ####Create Visualization
 
 ```{r}
-t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort Discussing MH w/ Coworkers by Exp. w/ Poor Workplace MH Response") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
+t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort Discuss MH w/ Coworkers by Exp. w/ Poor Workplace MH Response") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
 t16
 ```
 
@@ -794,7 +794,7 @@ The chi-squared is less than .01.  Therefore, we can reject the null and say tha
 ####Creating the Visualization
 
 ```{r}
-t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue. ~., scales="free_y") + ggtitle("Comfort with Discussing MH with Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
+t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue. ~., scales="free_y") + ggtitle("Comfort Discussing MH with Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count")
 t17
 ```
 
