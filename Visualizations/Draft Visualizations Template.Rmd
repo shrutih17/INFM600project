@@ -4,12 +4,14 @@ output: word_document
 ---
 
 #Loading the Data and Necessary Packages
-```{r}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(comment = NA)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(grid)
 library(gridExtra)
+library(knitr)
 health <- read.csv("mentalsurvey_clean.csv")
 ```
 
@@ -40,7 +42,7 @@ colnames(dataf)<- "Disorder"
 #Removing inconsistent response
 subdataf <- subset(dataf, disorders != "I haven\'t been formally diagnosed, so I felt uncomfortable answering, but Social Anxiety and Depression.")
 count_disorder <-data.frame(count(subdataf, Disorder, sort = TRUE))
-count_disorder
+kable(count_disorder)
 ```
 
 ```{r}
@@ -122,7 +124,7 @@ dfageprop <- as.data.frame(ageprop)
 #Distribution of respondents reporting a mental disorder by age groups
 ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status based on age groups (1)')
 ```
 
 ####Interpretation of results
@@ -137,7 +139,7 @@ ageprop1
 dfageprop1 <- as.data.frame(ageprop1)
 ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')+ggtitle('Distribution of mental health status based on age groups (2)')
 ```
 
 ####Interepretion of results
@@ -802,7 +804,6 @@ t17
 
 In this visualization we see that perceived impact of discussing a mental health disorder with coworkers has a potentially significant impact on comfort level with discussing a mental health disorder with coworkers.  For those who feel that they would be viewed negatively by coworkers if they knew the respondent had a mental health issue, they frequently answer that they would not feel comfortable discussing a mental health disorder with coworkers. For those who feel like they are negatively viewed by coworkers because of a mental health issue, appear to be evenly split between maybe being comfortable and not being comfortable. Meanwhile, for those who feel that they are not viewed more negatively because of a mental health disorder, they most frequently say they would be comfortable discussing mental health with coworkers. For those who did not think they would be viewed negatively, they most frequently select that they may be comfortable discussing a mental health disorder with other coworkers, with yes being the second most common response from that group. This indicates that we may want to consider providing training to employees about mental illness in the workplace. 
 
-```
 ###Analzing the relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
 
 ####Plotting the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
