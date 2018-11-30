@@ -4,7 +4,7 @@ output: word_document
 ---
 
 #Loading the Data and Necessary Packages
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(comment = NA)
 library(dplyr)
 library(tidyr)
