@@ -147,9 +147,64 @@ ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) +
 The table and plot above show that among the people that said they have mental disorder currently, 71.6% lie in the 17-37 age group, 27% lie in the 37-57 age group and 1.3% lie in the age group of 57-77. Among the people that said No, 69.6% lie in the 17-37 age group, 29.2% lie in the 37-57 age group and 1.1% lie in the 57-77 group. Among the people that said Maybe, 69.6% liein the 17-37 age group, 29.9% lie in the 37-57 age group and .3% lie in the 57-77 age group.
 
 
-#Section 2: What are Other Companies Doing to Assist workers with Mental and Behavioral Health Policies
+#Section 2: Analysis of distribution of mental health benefits offered by companies in the dataset 
+
+###Distribution of employers offering mental healh benefits as part of healthcare coverage
 
 ```{r}
+#Creating a table for the variable "Does your employer provide mental health benefits as part of healthcare coverage?""
+
+table(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.)
+
+barplot(table(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.))
+
+```
+
+####Interpretation of results
+
+From the above output, we can see that out of a total 1433 companies, only 531 provide mental health benefits as part of healthcare coverage, which is approximately one-third of the responses.
+
+###Distribution of employers offering resources to learn more about mental health concerns and options for seeking help
+
+```{r}
+table(health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+
+barplot(table(health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.))
+```
+
+####Interpretation of results
+
+From the above output, we can see that a very small number of companies from the dataset of 1433 entries offer resources to employees to learn more about mental health concerns and options for seeking help.i.e., only 295 employers. For the dataset under study, this implies that a very small number of employers are taking steps to aquaint their employees with mental health benefits in the respective companies. Also, we can see that a significant number of employees, i.e., 320 out of 1433, do not know if their employers offer resporces to seek help regading mental health concerns. This also implies lack of initiative in generating awareness about mental health-related policies.
+
+###Do Companies in the survey dataset have formal discussions to Assist workers with Mental and Behavioral Health Policies
+
+For companies with mental health care options available, let us find out what percentage have a formal discussion (as part of a campaign/official communication) with employees to generate awareness about the mental health care policies. Here, we can create subset for companies with mental health care options available. This dataset(subset) will contain only those companies that provide mental health benefits as part of healthcare coverage
+
+```{r}
+Company<-subset(health, Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.=="Yes")
+Company
+```
+
+###Percentage of employers who have a formal discussion about mental health with their employees
+
+```{r}
+#Creating a table for for the variable related to employers formally discussing mental health with employees
+table(Company$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+#Computing the percentage
+percent<-table(Company$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)/length(Company$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+#The parameter percent gives us the value of the percenntage needed
+percent
+```
+
+####Interpretation of results
+
+The value of the parameter percent in the above output for the column "Yes" gives us the percentage of employers who have formally discussed mental health with their employees (considering only those companies who provide mental health benefits to their employees). Thus, about 26.5 percent of employers hve a formal discussion about mental health and related policies with their employees. For the dataset under study, this is a very small number. In order to make the employees familiar with the mental health policies and benefits, it is crucial that the employers have a formal discussion with them.
+
+####Visualizing the proportion of responses for employers formally discussing mental health with theri employees
+
+```{r}
+Company<-droplevels(Company)
+barplot(table(Company$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..), xlab = "Responses", ylab = "Count", main = "Do Employers Formally Discuss Mental Health?")
 
 ```
 
@@ -189,6 +244,38 @@ grid.arrange(plot1, plot2,ncol=2,top = title1, widths = c(3/4,1))
 ####Interpretation of Results 
 
 The figure above shows that majority of people are certain that discussing physical health issues with their employers will not result in negative consequences. Very few believe that discussing physical health issues will have negative consequences. The responses to whether discussing mental health disorders with employers will result in negative consequences is more divided. Some people believe that discussing mental health disorders will have a negative consequence. This is probably due to the stigma at workplace which may make them believe that they might face negative consequences if their mental issues are brought infront of a employer. This will make them less likely to reach out for help, discuss their issues with their employers, take time off work. However, there are still more people who believe there won't be any negative consequences. This could be because they have already developed a smooth employer-employee relationship. There are comparatively more number of people who are unsure of whether or not there would be any negative consequences if mental health disorders are discussed with their employers.
+
+###Analzing the relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
+
+It is likely that if employees perceived a negative impact from discussing mental illness at a previous workplace, they may have similar perception at the current workplace as well. 
+We can plot the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
+
+```{r}
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
+```
+
+From the above ggplot, we can observe that a majority of respondents(615) feel that discussing mental health disorders with some of their previous employers resulted in negative consequences for them. While a significant number of respondents responded that they do not know, we can conclude from the graph that the majority did experience negative consequences after discussing mental health disorders with their previous employers
+
+Plotting the ggplot for the dependent variable "Do you think that discussing a mental health disorder with your employer would have negative consequences?"
+
+```{r}
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with current employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+```
+
+From the above ggplot, we can see that a vast majority of respondents(487) are not sure if discussing mental health disorders with their current employers would have negative consequences; followed by about 438 respondents who do not think that it could lead to negative consequences.
+
+####Chi-squared test
+
+```{r}
+m1<-table(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences., health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+chisq.test(m1)
+```
+
+####Interpretation of results
+
+We can see from the above chi-squared test that the p-value is very small, meaning we can reject the hypothesis of independence. Thus there is a relationship between perceiving the negative impact of mental illness at previous workplace and perceiving the same at the current workplace. Employees who have perceived or experienced a negative impact of discussing a mental illness with their previous employer feel the same way about discussing it with their current employer. This type of attitude may be the result of some form of negative impact such as bias, discrimination or lack of oppurtunities that they faced at the previous workplace. This might have influenced their decision to discusstheir mental illnesses with their current employer as well.
 
 ##Anonymity Policies 
 
@@ -836,6 +923,15 @@ chisq.test(t1)
 
 ####Interpret results
 We can see that the p-value of the Chi-squared test is very small, meaning we can reject the hypothesis of independence. Thus there is a relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
+
+###Analzing the relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
+
+####Plotting the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
+
+```{r}
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
+```
 
 
 
