@@ -802,6 +802,43 @@ t17
 
 In this visualization we see that perceived impact of discussing a mental health disorder with coworkers has a potentially significant impact on comfort level with discussing a mental health disorder with coworkers.  For those who feel that they would be viewed negatively by coworkers if they knew the respondent had a mental health issue, they frequently answer that they would not feel comfortable discussing a mental health disorder with coworkers. For those who feel like they are negatively viewed by coworkers because of a mental health issue, appear to be evenly split between maybe being comfortable and not being comfortable. Meanwhile, for those who feel that they are not viewed more negatively because of a mental health disorder, they most frequently say they would be comfortable discussing mental health with coworkers. For those who did not think they would be viewed negatively, they most frequently select that they may be comfortable discussing a mental health disorder with other coworkers, with yes being the second most common response from that group. This indicates that we may want to consider providing training to employees about mental illness in the workplace. 
 
+```
+###Analzing the relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
+
+####Plotting the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
+
+```{r}
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
+
+```
+
+####Interpreting the results
+From the above ggplot, we can observe that a majority of respondents(615) feel that discussing mental health disorders with some of their previous employers resulted in negative consequences for them. While a significant number of respondents responded that they do not know, we can conclude from the graph that the majority did experience negative consequences after discussing mental health disorders with their previous employers
+
+###Plotting the ggplot for the dependent variable "Do you think that discussing a mental health disorder with your employer would have negative consequences?"
+
+```{r}
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with current employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+
+```
+
+####Interpretation of results
+From the above ggplot, we can see that a vast majority of respondents(487) are not sure if discussing mental health disorders with their current employers would have negative consequences; followed by about 438 respondents who do not think that it could lead to negative consequences 
+
+####Chi-squared test
+```{r}
+t1<-table(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences., health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
+chisq.test(t1)
+```
+
+####Interpret results
+We can see that the p-value of the Chi-squared test is very small, meaning we can reject the hypothesis of independence. Thus there is a relationship between perceiving the negative impact of mental illness at previous workplace and the impact at current workplace
+
+
+
+
 #Works Cited
 
 Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees??? Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123???145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
