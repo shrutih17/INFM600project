@@ -146,6 +146,15 @@ ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) +
 
 The table and plot above show that among the people that said they have mental disorder currently, 71.6% lie in the 17-37 age group, 27% lie in the 37-57 age group and 1.3% lie in the age group of 57-77. Among the people that said No, 69.6% lie in the 17-37 age group, 29.2% lie in the 37-57 age group and 1.1% lie in the 57-77 group. Among the people that said Maybe, 69.6% liein the 17-37 age group, 29.9% lie in the 37-57 age group and .3% lie in the 57-77 age group.
 
+###Distribution of mental health disorder based on geography
+
+```{r}
+table(health$What.US.state.or.territory.do.you.live.in. , health$Do.you.currently.have.a.mental.health.disorder.)
+```
+
+####Interpretation of results
+
+From the above table output, we can see that the US state with the majority of mental health illness cases is California, followed by Illoinois and New York
 
 #Section 2: Analysis of distribution of mental health benefits offered by companies in the dataset 
 
@@ -185,7 +194,7 @@ Company<-subset(health, Does.your.employer.provide.mental.health.benefits.as.par
 Company
 ```
 
-###Percentage of employers who have a formal discussion about mental health with their employees
+####Percentage of employers who have a formal discussion about mental health with their employees
 
 ```{r}
 #Creating a table for for the variable related to employers formally discussing mental health with employees
