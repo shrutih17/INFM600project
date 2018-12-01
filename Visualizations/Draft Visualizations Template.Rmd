@@ -179,7 +179,7 @@ From the above output, we can see that out of a total 1433 companies, only 531 p
 ```{r}
 table(health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
 
-barplot(table(health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.), xlab = "Responses", ylab = "Count", main = "Do Employers Offer Resources Related to Mental Health?")
+barplot(table(health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.), xlab = "Responses", ylab = "Count", main = "Do Employers Offer Resources\nRelated to Mental Health?")
 ```
 
 ####Interpretation of results
@@ -261,7 +261,7 @@ It is likely that if employees perceived a negative impact from discussing menta
 We can plot the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
 
 ```{r}
-ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count") + theme(axis.title=element_text(size=12))
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous\nemployer resulting in negative consequences") + xlab("Response") + ylab("Count") + theme(axis.title=element_text(size=12))
 summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
 ```
 
@@ -270,7 +270,7 @@ From the above ggplot, we can observe that a majority of respondents(615) feel t
 Plotting the ggplot for the dependent variable "Do you think that discussing a mental health disorder with your employer would have negative consequences?"
 
 ```{r}
-ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with current employer resulting in negative consequences") + xlab("Response") + ylab("Count") + theme(axis.title=element_text(size=12))
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with\ncurrent employer resulting in negative consequences") + xlab("Response") + ylab("Count") + theme(axis.title=element_text(size=12))
 summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
 ```
 
@@ -368,7 +368,7 @@ This chi-squared test's p value is very large. Therefore, there is likely not a 
 
 ```{r}
 #Create Visualization
-t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections For Tech vs. Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
+t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections for Tech\nvs.Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
 t1
 ```
 
@@ -480,7 +480,7 @@ Because the p value is less than .01 we can reject the null and say that we thin
 
 ```{r}
 #Create Visualization
-t4 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$CompanySize~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
+t4 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$CompanySize~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave\nby Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
 t4
 ```
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
@@ -515,7 +515,7 @@ Because the p value is not less than .01 we cannot reject the null. The null hyp
 ####Create Visualization
 
 ```{r}
-t5 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+t5 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
 t5
 ```
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
@@ -542,7 +542,7 @@ Because the p value is less than .01 we can reject the null and say that we thin
 ####Create Visualization
 
 ```{r}
-t6 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Disc. by Employer") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+t6 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health\nDiscussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
 t6
 ```
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
@@ -569,7 +569,7 @@ chisq.test(ELDbEOR)
 ####Create Visualization
 
 ```{r}
-t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
 t7
 ```
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
@@ -607,7 +607,7 @@ Because the p value is less than .01 we can reject the null and say that we thin
 ####Create Visualization
 
 ```{r}
-t8 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$epr ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Exp. with Poor MH Response") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+t8 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$epr ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Experience\nwith Poor Mental health Response") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
 t8
 ```
 NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
@@ -639,7 +639,7 @@ The p value is very large.  Therefore, we cannot reject the null hypothesis. The
 ####Create Visualization
 
 ```{r}
-t9 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(~ health$gender) + ggtitle("Comfort with Discussing Mental Health Disorder with Supervisor by Gender") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t9 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(~ health$gender) + ggtitle("Comfort with Discussing Mental Health\nDisorder with Supervisor by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t9
 ```
 
@@ -666,7 +666,7 @@ We get a warning that the approximation may be incorrect, likely because some of
 ####Create Visualization
 
 ```{r}
-t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health Disorder with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\n Disorder with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t10
 ```
 
@@ -692,7 +692,7 @@ Because the p value is not less than .01 we cannot reject the null. The null hyp
 ####Create Visualization
 
 ```{r}
-t11 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Disc. Mental Health Disorder with Supervisor by Company Size") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t11 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussion of Mental Health\nDisorder with Supervisor by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t11
 ```
 
@@ -717,7 +717,7 @@ chisq.test(MHbPR)
 ####Create Visualization
 
 ```{r}
-t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Disc. MH w/ Supervisor by Exp. w/ Poor Workplace Response") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health with\nSupervisor by Experience with Poor Workplace Response") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t17
 ```
 
@@ -754,7 +754,7 @@ table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with
 
 
 ```{r}
-t12 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort w/ Disc. MH with Supervisor by Perception of Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t12 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health disorder\nwith Supervisor by Perception of Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder\nwith your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t12
 ```
 
@@ -785,7 +785,7 @@ The chi-squared is very large.  Therefore, we cannot reject the null hypothesis 
 ####Create Visualization
 
 ```{r}
-t13 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing MH Disorder with Coworkers by Gender") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t13 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t13
 ```
 
@@ -813,7 +813,7 @@ We get a warning that the approximation may be incorrect, likely because some of
 ####Create Visualization
 
 ```{r}
-t14 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing MH Disorder with Coworkers by Age Group") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t14 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Age Group") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t14
 ```
 
@@ -842,7 +842,7 @@ The chi-squared test shows a p value that is less than 0.01.  Therefore, we can 
 ####Create Visualization
 
 ```{r}
-t15 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussing MH Disorder with Coworkers by Company Size") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t15 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health\nDisorder with Coworkers by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t15
 ```
 
@@ -868,7 +868,7 @@ The chi-squared test shows a p value that is less than 0.01.  Therefore, we can 
 ####Create Visualization
 
 ```{r}
-t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort Disc. MH w/ Coworkers by Exp. w/ Poor Workplace MH Response") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health disorders\nwith Coworkers by Experience with\npoor Workplace Response\nto mental health") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t16
 ```
 
@@ -893,7 +893,7 @@ The chi-squared is less than .01.  Therefore, we can reject the null and say tha
 ####Creating the Visualization
 
 ```{r}
-t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue. ~., scales="free_y") + ggtitle("Comfort w/ Disc. MH Disorder with Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue. ~., scales="free_y") + ggtitle("Comfort with discussing Mental Health Disorder with\n Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
 t17
 ```
 
@@ -906,7 +906,7 @@ In this visualization we see that perceived impact of discussing a mental health
 ####Plotting the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
 
 ```{r}
-ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous\nemployer resulting in negative consequences") + xlab("Response") + ylab("Count")
 summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
 
 ```
@@ -917,7 +917,7 @@ From the above ggplot, we can observe that a majority of respondents(615) feel t
 ###Plotting the ggplot for the dependent variable "Do you think that discussing a mental health disorder with your employer would have negative consequences?"
 
 ```{r}
-ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with current employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with current\nemployer resulting in negative consequences") + xlab("Response") + ylab("Count")
 summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
 
 ```
@@ -939,7 +939,7 @@ We can see that the p-value of the Chi-squared test is very small, meaning we ca
 ####Plotting the ggplot for the independent variable "Do you think that discussing a mental health disorder with previous employers would have negative consequences?"
 
 ```{r}
-ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous employer resulting in negative consequences") + xlab("Response") + ylab("Count")
+ggplot(health, aes(x = health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)) + geom_bar() + ggtitle("Discussing mental health disorder with previous\nemployer resulting in negative consequences") + xlab("Response") + ylab("Count")
 summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previous.employers.would.have.negative.consequences.)
 ```
 
