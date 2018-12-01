@@ -191,7 +191,7 @@ For companies with mental health care options available, let us find out what pe
 
 ```{r}
 Company<-subset(health, Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.=="Yes")
-Company
+
 ```
 
 ####Percentage of employers who have a formal discussion about mental health with their employees
