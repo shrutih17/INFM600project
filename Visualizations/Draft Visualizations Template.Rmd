@@ -322,7 +322,7 @@ We get a warning that the approximation may be incorrect, likely because some of
 ####Visualization of Data
 
 ```{r}
-t0 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count")+ theme(axis.title=element_text(size=12))
+t0 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar(fill="purple")+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Anonymity Protections by Comapny Size") + xlab("Perceived Difficulty Level") + ylab("Count")+ theme(axis.title=element_text(size=12))
 t0
 ```
 
@@ -368,7 +368,7 @@ This chi-squared test's p value is very large. Therefore, there is likely not a 
 
 ```{r}
 #Create Visualization
-t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar()+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections for Tech\nvs.Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
+t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar(fill="blue")+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections for Tech\nvs.Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
 t1
 ```
 
@@ -731,7 +731,6 @@ When asked about experience with a poorly handled response to mental health, res
 MHbVN <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
 MHbVN
 ```
-
 
 ####Chi-Squared
 
