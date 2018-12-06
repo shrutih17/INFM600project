@@ -1,5 +1,5 @@
 ---
-title: "Draft Visualizations for Semester Project"
+title: "Final Report Semester Project"
 output:
   word_document: default
 ---
@@ -15,6 +15,11 @@ library(gridExtra)
 library(knitr)
 health <- read.csv("mentalsurvey_clean.csv")
 ```
+
+#Introduction
+
+This document contains the fully commented analysis script and outputs, written summary of the project, and summary of contributorship to each part of the project.  
+
 
 #Section 1: Distribution of mental health disorders based on different demographics
 
@@ -943,7 +948,13 @@ summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previo
 ```
 
 
+#Summary
 
+This is a placeholder for the summary.
+
+#Who did what in the project
+
+Laura - For the work plan, I worked with the group to draft the sections on dataset used, audience, and research questions. I also reviewed a list of studies on mental health in the workplace and drafted summaries that can be used as a reference by the group. For the data cleaning documentation, I examined nine variables and noted if there were any issues. I worked with other group members to determine how to handle the variables. For the R Script, I did frequency tables related to my analyses and the variables I examined for data cleaning.  For the R Plot Draft, I created visualizations and interpretations for my analyses (in section 3, the portions on anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors). For the presentation, I created a template for the presentation that included what was needed and placeholder slides for the analyses the group did. I also did slides related to my analysis (anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors) and used the findings to draft some recommendations.For the final package, I did the first draft of the summary.
 
 #Works Cited
 
