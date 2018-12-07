@@ -119,6 +119,7 @@ labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
 labs
 health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
 View(health$AgeGroup)
+write.csv(health, "output.csv")
 
 agegr <- table(health$Do.you.currently.have.a.mental.health.disorder.,health$AgeGroup)
 ageprop <- prop.table(agegr,2)
@@ -134,6 +135,29 @@ ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) +
 ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
   labs(x = "Disorder", y = 'Proportion', fill = 'Age group')
+
+# NEGATIVE CONSEQUENCES ON DISUCSSING HEALTH ISSUES: MENTAL VS PHYSICAL
+
+#Creating a table with gender and mental health responses
+tab <- table(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences., health$gender)
+tab
+#Creating a table with gender and physical health responses
+tab1 <- table(health$Do.you.think.that.discussing.a.physical.health.issue.with.your.employer.would.have.negative.consequences., health$gender)
+tab1
+
+#creating the combined plot
+tabdf <- as.data.frame(tab)
+tab1df <- as.data.frame(tab1)
+
+plot1 <- ggplot(data = tabdf, aes(x = Var1, y =Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Mental health disorders", y = 'count')+ theme(legend.position='none')
+
+plot2 <- ggplot(data = tab1df, aes(x = Var1, y =Freq, fill = Var2)) + 
+  geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
+  labs(x = "Physical health disorders", y = 'count', fill = 'Gender')
+title1=textGrob("Negative consequences: Mental vs Physial", gp=gpar(fontface="bold"))
+grid.arrange(plot1, plot2,ncol=2,top = title1, widths = c(3/4,1))
 
 #POSSIBLE FACTORS IN WHETHER EMPLOYEE FEELS ASKING FOR LEAVE WOULD BE DIFFICULT
 
