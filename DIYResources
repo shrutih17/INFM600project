@@ -1,0 +1,24 @@
+Definition: According to Statistics Solutions: “time series analysis is a statistical technique that deals with time series data, or trend analysis in order to extract meaningful statistics and other characteristics of the data.  Time series data means that data is in a series of  particular time periods or intervals.” 
+
+According to Dagum (2010), “Time series data have a natural temporal ordering. This makes it distinct from common data problems, where there is no natural ordering of the observations...A time series model will generally reflect the fact that observations close together in time will be more closely related than observations further apart (p. 433).”
+
+Example: Daily air temperature or monthly precipitation in a specific location, yearly production of a product, astronomy, 
+
+Types of Data:  Continuous data, discrete numeric, or symbolic data would be needed for the observations.  The time data itself would be categorical data. 
+
+Starter List of Resources:
+
+R Packages and Tutorials
+R Bloggers has a list of R packages that can be used for Time Series Analysis:  https://www.r-bloggers.com/packages-for-getting-started-with-time-series-analysis-in-r/  
+
+Tutorials and MOOCs
+Time Series Analysis course on EdX (utilizes R software):  https://www.edx.org/course/time-series-analysis-0
+Time Series Analysis course on MIT Open CourseWare (requires some background in econometrics): https://ocw.mit.edu/courses/economics/14-384-time-series-analysis-fall-2013/ 
+Practical Time Series Analysis (appears to be targeted to beginners in data analysis):  https://www.coursera.org/learn/practical-time-series-analysis 
+R-statistics.co by Selva Prabhakaran: Covers foundational concepts, plotting functions, basic and advanced concepts of time series analysis.
+Source: http://r-statistics.co/Time-Series-Analysis-With-R.html 
+
+Other Reference Materials
+
+https://www.statisticssolutions.com/time-series-analysis/ 
+Dagum, E.B. (2010). “TIME SERIES MODELING AND DECOMPOSITION.”  STATISTICA, anno LXX, n. 4, 2010.  Retrieved December 6, 2018 from https://rivista-statistica.unibo.it/article/viewFile/3597/2949.   
