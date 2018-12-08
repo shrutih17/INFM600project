@@ -20,7 +20,6 @@ health <- read.csv("mentalsurvey_clean.csv")
 
 This document contains the fully commented analysis script and outputs, written summary of the project, and summary of contributorship to each part of the project.  
 
-
 #Section 1: Distribution of mental health disorders based on different demographics
 
 
@@ -294,41 +293,52 @@ We can see from the above chi-squared test that the p-value is very small, meani
 
 ##Anonymity Policies 
 
-If employees feel that their anonymity is not protected, they may be less likely to reach out for help.
+This part of the analysis looks at answers to the question "Is your anonymity protected if you choose to take advantage of mental health or substance abuse treatment resources provided by your employer?" by reported company size and whether the respondent's company is primarily a tech company. This is is important because, if employees feel that their anonymity is not protected, they may be less likely to reach out for help.
 
 ###Anonymity Policies by Company Size
-
-####Crosstab Table
 
 ```{r}
 #Put company size in order
 health$CompanySize  = factor(health$How.many.employees.does.your.company.or.organization.have, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
-#Create Cross-tab Table
-APbCS <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., health$CompanySize)
-head(APbCS)
+#Modify Labels for Anonymity Policies
+health$AnonPolicies2 <- factor(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.,
+levels = c("I don't know", "No", "Yes"),
+labels = c("Don't Know", "No", "Yes"))
+#Create subset
+AnoymityPolicies_By_CompanySize <- table(health$AnonPolicies2, health$CompanySize)
 ```
 
-####Proportions table
+####Crosstab Table
+
+```{r}
+#Print Cross-tab table
+kable(AnoymityPolicies_By_CompanySize)
+```
+
+####Proportions Table
 
 ```{r}
 #Create a proportions table by Row
-prop.table(APbCS, 2)
+kable(prop.table(AnoymityPolicies_By_CompanySize, 2))
 ```
 
 ####Chi-Squared Test 
 
 ```{r}
 #Do a chi-squared test
-chisq.test(APbCS)
+chisq.test(AnoymityPolicies_By_CompanySize)
 ```
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small. Therefore, we cannot draw and conclusions for this test about whether these two variables are related.
+Our null hypothesis is that there is that company size and anonymity policies are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
-####Visualization of Data
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are less than 5 (Townsley, 2002). Therefore, we cannot draw any conclusions for this test about whether these two variables are related.
+
+####Visualizing the Data
 
 ```{r}
-t0 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar(fill="purple")+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Anonymity Protections by Comapny Size") + xlab("Perceived Difficulty Level") + ylab("Count")+ theme(axis.title=element_text(size=12))
-t0
+#Create visualization
+AnoymityPolicies_By_CompanySize_Viz <- ggplot(health, aes(x = health$AnonPolicies2))+geom_bar(fill="purple")+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Anonymity Protections by Comapny Size") + xlab("Perceived Difficulty Level") + ylab("Count")+ theme(axis.title=element_text(size=12))
+AnoymityPolicies_By_CompanySize_Viz
 ```
 
 ####Interpretation of Results 
@@ -337,94 +347,105 @@ The table and chart above show that across all company sizes, most respondents i
 
 ###Anonymity Policies by Whether it is a Tech Company
 
-####Cross-tab Table
-
 ```{r}
-#Add labels to tech company org
-health$TLabel <- factor(health$Is.your.employer.primarily.a.tech.company.organization.,
+#Add labels to tech company org question
+health$TechCompany2 <- factor(health$Is.your.employer.primarily.a.tech.company.organization.,
 levels = c(0, 1),
 labels = c("Not primarily tech", "Primarily Tech"))
+#Create a subset
+AnonymityPolicies_by_TechCompany <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., health$TechCompany2)
 ```
+
+####Crosstab Table
 
 ```{r}
-#Create a crosstab table
-APbT2 <- table(health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer., health$TLabel)
-head(APbT2)
+#Print Cross-tab table
+kable(AnonymityPolicies_by_TechCompany)
 ```
-
 
 ####Proportions table
 
 ```{r}
 #Create a proportions table by Row
-prop.table(APbT2, 2)
+kable(prop.table(AnonymityPolicies_by_TechCompany, 2))
 ```
 
 ####Chi-Squared Test 
 
 ```{r}
 #Do a chi-squared test
-chisq.test(APbT2)
+chisq.test(AnonymityPolicies_by_TechCompany)
 ```
 
-This chi-squared test's p value is very large. Therefore, there is likely not a relationship between these two variables.  
+Our null hypothesis is that there is that company size and whether it is primarily a tech company are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). This chi-squared test's p value is very large. Therefore, we fail to reject the null.
 
-####Visualization of Data
+####Visualizing the Data
 
 ```{r}
 #Create Visualization
-t1 <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar(fill="blue")+facet_wrap(health$TLabel ~ ., scales="free_y") + ggtitle("Anonymity Protections for Tech\nvs.Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
-t1
+AnonymityPolicies_by_TechCompany_viz <- ggplot(health, aes(x = health$Is.your.anonymity.protected.if.you.choose.to.take.advantage.of.mental.health.or.substance.abuse.treatment.resources.provided.by.your.employer.))+geom_bar(fill="blue")+facet_wrap(health$TechCompany2 ~ ., scales="free_y") + ggtitle("Anonymity Protections for Tech\nvs.Non-Tech Companies") + xlab("Is your anonymity protected?") + ylab("Count") + theme(axis.title=element_text(size=12))
+AnonymityPolicies_by_TechCompany_viz
 ```
 
 ####Interpretation of Results 
 
-The difference between primarily tech and non-primarily tech companies is not statistically significant in regards to anonymity policies for those seeking mental health services.  However, this may be influenced by the fact that the majority of those surveyed work for primiarily tech-oriented companies, so we do not have a large sample of those working for non-tech companies.  Furthermore, we do not know the industry that these non-tech companies are in, which means we cannot draw any firm conclusions here.  Nevertheless, in both cases, the clear majority of those surveyed indicated that they do not know  their current company's anonymity policy is towards those using mental health services.  In both cases, the next most common response to the question is that anonymity is protected for those using mental health services. As described above, the fact the majority of respondents do not know their company's anonymity policy is something that has to be addressed. 
+The difference between primarily tech and non-primarily tech companies is not statistically significant in regards to anonymity policies for those seeking mental health services.  However, this may be influenced by the fact that the majority of those surveyed work for primiarily tech-oriented companies, so we do not have a large sample of those working for non-tech companies.  Furthermore, we do not know the industry that these non-tech companies are in, which means we cannot draw any firm conclusions here.  Nevertheless, in both cases, the clear majority of those surveyed indicated that they do not know  their current company's anonymity policy is towards those using mental health services.  In both cases, the next most common response to the question is that anonymity is protected for those using mental health services. 
 
 ##Ease of Asking for Leave For A Mental Health Issue
 
-This is important because if employees feel that asking for time off from work for medical leave, they may be less likely to seek the help they need. 
+This part of the analysis looks at answers to the question "If a mental health issue prompted you to request a medical leave from work asking for that leave would be" by respondent demographics as well as their reports of several company characteristics. This is important because if employees feel that asking for time off from work for medical leave, they may be less likely to seek the help they need. 
 
 ###Answers by Gender
 
 ```{r}
-#Modify Labels (ideal if we can get it to fit)
-health$pd2 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+#Modify Labels for Perceived Leave Difficulty QUestion (ideal if we can get it to fit)
+health$perceivedleavediff1 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
 levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
 labels = c("Very easy (VE)", "Somewhat Easy (SE)", "Neutral (N)", "Somewhat Hard (SH)", "Very Hard (VH)", "Don't Know (DK)"))
-#Modify Labels (if health$pd2 does not fit, use this as an alternate)
-health$pd3 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
+#Modify Labels for Perceived Leave Difficulty Question (if health$perceivedleavediff1 does not fit, use this as an alternate)
+health$perceivedleavediff2 <- factor(health$If.a.mental.health.issue.prompted.you.to.request.a.medical.leave.from.work..asking.for.that.leave.would.be.,
 levels = c("Very easy", "Somewhat easy", "Neither easy nor difficult","Somewhat difficult", "Very difficult", "I don't know"),
 labels = c("VE", "SE", "N", "SH", "VH", "DK"))
+#Create a subset
+LeaveDiffbyGender <- table(health$perceivedleavediff1, health$gender)
 ```
 
+####Crosstab Table
 ```{r}
-#Crosstab table
-ELDbG <- table(health$pd2, health$gender)
-ELDbG
-prop.table(ELDbG, 2)
+#Print Crosstab
+kable(LeaveDiffbyGender)
+```
+
+####Proportions Table
+```{r}
+#Create Proportions table
+kable(prop.table(LeaveDiffbyGender, 2))
 ```
 
 ####Chi-Squared 
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between genders may not be statistically significant (or we do not have enough information)
-
 ```{r}
-chisq.test(ELDbG)
+#Run chi-squared test
+chisq.test(LeaveDiffbyGender)
 ```
 
-####Visualization of Data
+Our null hypothesis is that there is that gender and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
+
+We get a warning that the approximation may be incorrect, likely because some of the values from the table are less than 5 (Townsley, 2002). However, the large p value potentially indicates that that the differences between genders may not be statistically significant (or we do not have enough information because of the small number of people of other genders in our dataset).  
+
+####Visualizing the Data
 
 ```{r}
 #Create Visualization
-t2 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$gender ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t2
+LeaveDiffbyGender_Viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill="orange")+facet_wrap(health$gender ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Gender") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyGender_Viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results 
 
-Across all genders, the most common answer is "Somewhat Easy".  Interestingly, for women the second most common answer is "Somewhat Difficult", while for men the second most common answer is "Very Easy."  For those indicating their gender falls into another category, an equal amount indicated that they felt asking for leave was very hard or provided a neutral response ("neither easy or hard"). Across all genders there is a significant group of people indicating they find it somewhat to very hard to ask for leave. That being said, there are fewer women and those from other genders participating in this survey (compared to men), which may impact our results. Furthermore, the chi-squared test indicated that the approximation may be incorrect, likely because some of the values from the table are small.
+Across all genders, the most common answer is "Somewhat Easy".  Interestingly, for women the second most common answer is "Somewhat Difficult", while for men the second most common answer is "Very Easy."  For those indicating their gender falls into another category, an equal amount indicated that they felt asking for leave was very hard or provided a neutral response ("neither easy or hard"). Across all genders there is a sizable group of people indicating they find it somewhat to very hard to ask for leave, which indicates that perceived difficulty may vary by company. That being said, there are fewer women and those from other genders participating in this survey (compared to men). This means that we may not have a complete picture of the opinions of women and those who state their gender as other than male or female. 
 
 ###Answers by Age Group
 
@@ -433,61 +454,83 @@ Across all genders, the most common answer is "Somewhat Easy".  Interestingly, f
 labs <- c(paste(seq(17, 74, by = 20), seq(37, 80, by = 20),
                 sep = "-"))
 health$AgeGroup <- cut(health$age, breaks = c(seq(17, 74, by = 20), Inf), labels = labs, right = FALSE)
+#Create dataframe
+LeaveDiffbyAge <- table(health$perceivedleavediff1, health$AgeGroup)
 ```
 
+####Crosstab Table
+
 ```{r}
-#Crosstab table
-ELDbA <- table(health$pd2, health$AgeGroup)
-ELDbA
-#Proportions table
-prop.table(ELDbA)
+#Print Crosstab table
+kable(LeaveDiffbyAge)
+```
+
+####Proportions Table
+```{r}
+#Create Proportions table
+kable(prop.table(LeaveDiffbyAge, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(ELDbA)
+chisq.test(LeaveDiffbyAge)
 ```
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information)
+Our null hypothesis is that there is that age group and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
-####Visualization of Data
+We get a warning that the approximation may be incorrect, likely because because of the small number of respondents in our survey in the 57-77 age group (Townsley, 2002). However, the large p value potentially indicates that that the differences in perceived ease of requesting leave between age may not be statistically significant (or we do not have enough information because of the small number of people in the 57-77 age group in our dataset).
+
+####Visualizing the Data
 
 ```{r}
 #Create Visualization
-t3 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$AgeGroup ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Age Group") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t3
+LeaveDiffbyAge_Viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "orange")+facet_wrap(health$AgeGroup ~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Age Group") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyAge_Viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
-The most common response for those in the 17-27 and 37-57 age ranges is that asking for leave for a mental health issue was "Somewhat Easy" and the second most common isthat asking for leave "Very Easy".  However, there is a significant number in both age groups who provided a neutral answer (e.g., neither easy or difficult) or indicated that they felt asking for leave was hard/very hard. That being said, there are few people who are 57-77 participating in this survey and there are fewer people in the 37-57 age group than the 17-27 age group. Furthermore, the chi-squared test indicated that the approximation may be incorrect, likely because some of the values from the table are small (since few people fell into the 57-77 age range).  
+The most common response for those in the 17-27 and 37-57 age ranges is that asking for leave for a mental health issue was "Somewhat Easy" and the second most common isthat asking for leave "Very Easy".  However, there is a significant number in both age groups who provided a neutral answer (e.g., neither easy or difficult) or indicated that they felt asking for leave was hard/very hard. That being said, there are few people who are 57-77 participating in this survey and there are fewer people in the 37-57 age group than the 17-27 age group. Therefore, we may not have a complete picture of how perceived ease of requesting leave for a mental health issue may change as people age. 
 
 ###Answers by Company Size
 
 ```{r}
-#Crosstab table
-ELDbCS <- table(health$pd2, health$CompanySize)
-ELDbCS
-prop.table(ELDbCS, 2)
+#Create subset
+LeaveDiffbyCompanySize <- table(health$perceivedleavediff1, health$CompanySize)
+```
+
+####Crosstab Table
+
+```{r}
+#Print Crosstab Table
+kable(LeaveDiffbyCompanySize)
+```
+
+####Proportions Table
+
+```{r}
+kable(prop.table(LeaveDiffbyCompanySize, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(ELDbCS)
+chisq.test(LeaveDiffbyCompanySize)
 ```
 
-Because the p value is less than .01 we can reject the null and say that we think that there is a relationship between these two variables.
+Our null hypothesis is that there is that company size and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is less than .01 we can reject the null and say that we think that there is a relationship between these two variables.
 
-####Visualization of Data
+####Visualizing the Data
 
 ```{r}
 #Create Visualization
-t4 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$CompanySize~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave\nby Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
-t4
+LeaveDiffbyCompanySize_viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "orange")+facet_wrap(health$CompanySize~ ., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave\nby Company Size") + xlab("Perceived Difficulty Level") + ylab("Count")
+LeaveDiffbyCompanySize_viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
@@ -497,32 +540,46 @@ For very small companies (1-5 employees), there seems to be a fairly even split 
 ###Answers by Whether Current Company Provides Mental Health Benefits
 
 ```{r}
-#Modify Labels for mental health benefit provision
-health$mhb2 <- factor(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.,
+#Modify Labels for mental health benefit provision question
+health$MHBenefit2 <- factor(health$Does.your.employer.provide.mental.health.benefits.as.part.of.healthcare.coverage.,
 levels = c("I don't know", "No", "Not eligible for coverage / N/A","Yes"),
 labels = c("Don't Know", "No", "Ineligible/NA", "Yes"))
+#Create the subset
+LeaveDiffbyMHBenefit <- table(health$perceivedleavediff1, health$MHBenefit2)
 ```
 
+####Crosstab Table
+
 ```{r}
-#Crosstab Table
-ELDbMHB <- table(health$pd2, health$mhb2)
-ELDbMHB
+#Print the Crosstab Table
+kable(LeaveDiffbyMHBenefit)
+```
+
+####Proportions Table
+
+```{r}
+#Print the Crosstab Table
+kable(prop.table(LeaveDiffbyMHBenefit, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(ELDbMHB)
+#Run Chi-squared test
+chisq.test(LeaveDiffbyMHBenefit)
 ```
 
-Because the p value is not less than .01 we cannot reject the null. The null hypothesis is that there is no relationship between these two variables.
+Our null hypothesis is that there is that reported mental health benefit provision and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). 
+Because the p value is above .01, we fail to reject the null. There does not appear to be a statistically significant relationship between the two variables.  
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t5 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(~ health$mhb2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t5
+#Create Visualization
+LeaveDiffbyMHBenefit_viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "dark green")+facet_wrap(~ health$MHBenefit2, scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Benefit Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyMHBenefit_viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
@@ -532,51 +589,85 @@ For those who do not get mental health benefits, more participants responded tha
 ###Answers by Whether Current Company Has Ever Formally Discussed Mental Health
 
 ```{r}
-ELDbEDM <- table(health$pd2, health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
-ELDbEDM
+#Create the subset
+LeaveDiffbyMHDiscussion <- table(health$perceivedleavediff1, health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication..)
+```
+
+####Crosstab Table
+
+```{r}
+#Print crosstab table
+kable(LeaveDiffbyMHDiscussion)
+```
+
+####Proportions Table
+
+```{r}
+#Create proportions table
+kable(prop.table(LeaveDiffbyMHDiscussion, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(ELDbEDM)
+#Run chi-squared test
+chisq.test(LeaveDiffbyMHDiscussion)
 ```
 
-Because the p value is less than .01 we can reject the null and say that we think that there is a relationship between these two variables.
+Our null hypothesis is that there is that reported mental health discussion by current employer and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is below .01, we reject the null. There appears to be a statistically significant relationship between the two variables.
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t6 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental Health\nDiscussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t6
+#Create Visualization
+LeaveDiffbyMHDiscussion_viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "dark green")+facet_wrap( health$Has.your.employer.ever.formally.discussed.mental.health..for.example..as.part.of.a.wellness.campaign.or.other.official.communication.. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for \nLeave by Mental Health\nDiscussion by Employer") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyMHDiscussion_viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
 
-Across all categories (e.g., yes they have discussed, no they haven't, don't know), the most common response is that most recipients think it would be somewhat easy to request leave. Interestingly, for those who did not know if there has been a discussion, a large contingent also indicated they don't know how hard it would be to request leave.  For those where there has been a discussion, far fewer people say it would be hard to request leave to handle a mental illness than those who say it would be easy to very easy. For those where there has not been a discussion (which is the majority of respondents), the second most common answer is that it would be somewhat hard to request leave to hanlde a mental illness.  
+Across all categories (e.g., yes they have discussed, no they haven't, don't know), the most common response is that most recipients think it would be somewhat easy to request leave. Interestingly, for those who did not know if there has been a discussion, a large contingent also indicated they don't know how hard it would be to request leave. For those where there has been a discussion, far fewer people say it would be hard to request leave to handle a mental illness than those who say it would be easy to very easy. For those where there has not been a discussion (which is the majority of respondents), the second most common answer is that it would be somewhat hard to request leave to handle a mental illness.  In addition, the proportion of respondents who indicated that it would be very hard to ask for leave is a lot lower in companies where it is reported that there was a mental health discussion or that it is unknown that there has been a mental health discussion compared to companies where there has not been a discussion.
 
 ###Answers by Whether Current Company Offers Other Resources
 
 ```{r}
-ELDbEOR <- table(health$pd2, health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
-ELDbEOR
+#Creating the subset
+LeaveDiffbyOtherMHResources <- table(health$perceivedleavediff1, health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help.)
+```
+
+####Crosstab Table
+
+```{r}
+#Print the crosstab
+kable(LeaveDiffbyOtherMHResources)
+```
+
+####Proportions Table
+
+```{r}
+#Create the proportions table
+kable(prop.table(LeaveDiffbyOtherMHResources, 2))
 ```
 
 ####Chi-Squared 
 
-Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
-
 ```{r}
-chisq.test(ELDbEOR)
+#Run chi-squared test
+chisq.test(LeaveDiffbyOtherMHResources)
 ```
 
-####Create Visualization
+Our null hypothesis is that there is that reported other mental health resources by current employer and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is below .01, we reject the null. There appears to be a statistically significant relationship between the two variables.
+
+####Visualizing the Data
 
 ```{r}
-t7 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t7
+#Create visualization
+LeaveDiffbyOtherMHResources_viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "dark green")+facet_wrap( health$Does.your.employer.offer.resources.to.learn.more.about.mental.health.concerns.and.options.for.seeking.help. ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Mental\nHealth Resource Provision") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyOtherMHResources_viz
 ```
+
 NOTE:  VE = Very Easy, SE = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, VH = Very Hard, DK = Don't Know.  
 
 ####Interpretation of Results
@@ -586,35 +677,44 @@ Across all categories (e.g., yes there are resources, no they aren't, don't know
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-ELDbPR <- table(health$pd2, health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
-ELDbPR
-prop.table(ELDbPR, 2)
-```
-
-#Revise Labels
-
-```{r}
-#Modify Labels for unsupportive response to make them shorter
-health$epr <- factor(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.,
+#Modify Labels for poor response to mental health issue question to make them shorter
+health$expwpoorMHresponse <- factor(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.,
 levels = c("Maybe/Not sure", "N/A", "No","Yes, I experienced", "Yes, I observed"),
 labels = c("Don't Know", "N/A", "No", "Yes, experienced", "Yes, observed"))
-table(health$pd2, health$epr)
+#Create subset
+LeaveDiffbyPoorResponse <- table(health$perceivedleavediff1, health$expwpoorMHresponse)
+```
+
+####Crosstab Table
+
+```{r}
+#Create table
+kable(LeaveDiffbyPoorResponse)
+```
+
+####Proportions Table
+
+```{r}
+#Create proportions table
+kable(prop.table(LeaveDiffbyPoorResponse, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(ELDbPR)
+chisq.test(LeaveDiffbyPoorResponse)
 ```
 
-Because the p value is less than .01 we can reject the null and say that we think that there are differences between categories.
+Our null hypothesis is that there is that experience with a poor response to a mental health issue (current or former workplace) and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is below .01, we reject the null. There appears to be a statistically significant relationship between the two variables.
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t8 <- ggplot(health, aes(x = health$pd3))+geom_bar()+facet_wrap(health$epr ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Experience\nwith Poor Mental health Response") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
-t8
+#Create Visualization
+LeaveDiffbyPoorResponse_viz <- ggplot(health, aes(x = health$perceivedleavediff2))+geom_bar(fill = "red")+facet_wrap(health$expwpoorMHresponse ~., scales="free_y") + ggtitle("Perceived Difficulty of Asking for Leave by Experience\nwith Poor Mental health Response") + xlab("Perceived Difficulty Level") + ylab("Count") + theme(axis.title=element_text(size=12))
+LeaveDiffbyPoorResponse_viz
 ```
+
 NOTE:  E = Very Easy, S = Somewhat Easy, N = Neutral (or Neither Easy nor Difficult), SH = Somewhat Hard, H = Very Hard, D = Don't Know.  
 
 ####Interpretation of Results
@@ -623,29 +723,45 @@ Most people surveyed indicate that they have never had an experience with an uns
 
 ##Comfort with talking to Supervisor About Mental Health
 
-This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a supervisor in case they need additional assistance. In addition, we may want to consider training supervisors on how to handle instances where employees reach out to them about mental health. 
+This part of the analysis looks at answers to the question "Would you feel comfortable discussing a mental health disorder with your direct supervisor" by respondent demographics as well as their reports of several company characteristics. This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a supervisor in case they need additional assistance. 
 
 ###Answers by Gender
 
 ```{r}
-MHbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$gender)
-MHbG
-prop.table(MHbG, 2)
+#Create subset
+DiscMHBossbyGender <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$gender)
 ```
+
+####Crosstab Table
+
+```{r}
+#Create crosstab
+kable(DiscMHBossbyGender)
+```
+
+####Proportions Table
+
+```{r}
+#Create proportion table
+kable(prop.table(DiscMHBossbyGender, 2))
+```
+
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(MHbG)
+#Run chi-squared test
+chisq.test(DiscMHBossbyGender)
 ```
 
-The p value is very large.  Therefore, we cannot reject the null hypothesis. The null hypothesis is that these two variables are indepdendent (no relationship between them)
+Our null hypothesis is that there is that reported comfort discussing mental health with supervisor and gender are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is very large, we fail to reject the null. There does not appear to be a statistically significant relationship between the two variables. However, this might be influenced by the small frequencies among those who report having an other gender (Townsley, 2002).  
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t9 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_grid(~ health$gender) + ggtitle("Comfort with Discussing Mental Health\nDisorder with Supervisor by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t9
+#Create visualization
+DiscMHBossbyGender_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar(fill = "orange")+facet_wrap(~ health$gender, scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Supervisor by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHBossbyGender_viz 
 ```
 
 ####Interpretation of Results
@@ -655,24 +771,38 @@ Most respondents across genders indicate that they would be comfortable discussi
 ###Answers by Age Group
 
 ```{r}
-MHbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$AgeGroup)
-MHbA
-prop.table(MHbA, 2)
+#Create subset
+DiscMHBossbyAge <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$AgeGroup)
+```
+
+####Crosstab Table
+
+```{r}
+#Run crosstab table
+kable(DiscMHBossbyAge)
+```
+
+####Proportions Table
+
+```{r}
+kable(prop.table(DiscMHBossbyAge, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(MHbA)
+chisq.test(DiscMHBossbyAge)
 ```
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups may not be statistically significant (or we do not have enough information).
+Our null hypothesis is that there is that age group and perceived difficulty of requesting leave are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
-####Create Visualization
+We get a warning that the approximation may be incorrect, likely because because of the small number of respondents in our survey in the 57-77 age group (Townsley, 2002). However, the large p value indicates that that the differences in perceived ease of requesting leave between age may not be statistically significant (or we do not have enough information because of the small number of people in the 57-77 age group in our dataset).
+
+####Visualizing the Data
 
 ```{r}
-t10 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\n Disorder with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t10
+DiscMHBossbyAge_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar(fill = "orange")+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\n Disorder with Supervisor by Age") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHBossbyAge_viz
 ```
 
 ####Interpretation of Results
@@ -682,23 +812,39 @@ The majority of respondents in the 17-37 and 37-57 age groups responded that the
 ###Answers by Company Size
 
 ```{r}
-MHbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$CompanySize)
-MHbCS
-prop.table(MHbCS, 2)
+#Creating subset
+DiscMHBossbyCompSize <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$CompanySize)
 ```
+
+####Crosstab Table
+
+```{r}
+#Creating the crosstab
+kable(DiscMHBossbyCompSize)
+```
+
+####Proportions Table
+
+```{r}
+#Create the proportions table
+kable(prop.table(DiscMHBossbyCompSize, 2))
+```
+
 
 ####Chi-Squared
 ```{r}
-chisq.test(MHbCS)
+#Run chi-squared test
+chisq.test(DiscMHBossbyCompSize)
 ```
 
-Because the p value is not less than .01 we cannot reject the null. The null hypothesis is that there is no relationship between these two variables.
+Our null hypothesis is that there is that reported comfort discussing mental health with supervisor and reported company size are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is not less than .01 we cannot reject the null. 
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t11 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussion of Mental Health\nDisorder with Supervisor by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t11
+#Create visualization
+DiscMHBossbyCompSize_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar(fill = "purple")+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussion of Mental Health\nDisorder with Supervisor by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHBossbyCompSize_viz
 ```
 
 ####Interpretation of Results
@@ -708,58 +854,81 @@ The pattern that we see in the data visualization is interesting.  For companies
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-MHbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
-MHbPR
-prop.table(MHbPR, 2)
+#Create subset
+DiscMHBossbyPoorResponse1 <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+```
+
+####Crosstab Table
+
+```{r}
+#Create crosstab table
+kable(DiscMHBossbyPoorResponse1)
+```
+
+####Proportions Table
+
+```{r}
+#Create proportions table
+kable(prop.table(DiscMHBossbyPoorResponse1, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(MHbPR)
+#Run chi-squared test
+chisq.test(DiscMHBossbyPoorResponse1)
 ```
 
-####Create Visualization
+Our null hypothesis is that there is that reported comfort discussing mental health with supervisor and experience with a poor response to a mental health issue are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is less than .01 we can reject the null and state that we suspect that there is a relationship between these two variables. 
+
+####Visualizing the Data
 
 ```{r}
-t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health with\nSupervisor by Experience with Poor Workplace Response") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t17
+#Create visualization
+DiscMHBossbyPoorResponse1_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar(fill = "red")+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health with\nSupervisor by Experience \nwith Poor Workplace Response") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHBossbyPoorResponse1_viz
 ```
 
 ####Interpret Results
 
-When asked about experience with a poorly handled response to mental health, respondents who were not sure if they expereinced it were evenly split between answering that they maybe comfortable discussing a mental health disorder with supervisors or not comfortable (there was also a large group that said they would be comfortable).  For those who answered that they did not have experience with a poor response, they also answered yes more often than maybe and no when also asked about their comfort with discussing a mental health disorder with a supervisor. Interestingly, those who stated "Yes, I observed" a poor response to mental health in the workplace were evenly split selected maybe the most often when also asked if they would feel comfortable discussing a mental health disorder with coworkers (and "yes" was the second most common response). However, those who stated that they experienced a poorly handled response were evenly split between the yes, no, and maybe answers when asked about comfort level discussing mental health with a supervisor.    
+When asked about experience with a poorly handled response to mental health, respondents who were not sure if they expereinced it were evenly split between answering that they maybe comfortable discussing a mental health disorder with supervisors or not comfortable (there was also a large group that said they would be comfortable). For those who answered that they did not have experience with a poor response, they also answered yes more often than maybe and no when also asked about their comfort with discussing a mental health disorder with a supervisor. Interestingly, those who stated "Yes, I observed" a poor response to mental health in the workplace were evenly split selected maybe the most often when also asked if they would feel comfortable discussing a mental health disorder with coworkers (and "yes" was the second most common response). However, those who stated that they experienced a poorly handled response were evenly split between the yes, no, and maybe answers when asked about comfort level discussing mental health with a supervisor.    
 
 ###Answers by If They Think Discussing a Mental Health Disorder with Employer Would Have Negative Consequences
-
-```{r}
-MHbVN <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.)
-MHbVN
-```
-
-####Chi-Squared
-
-```{r}
-chisq.test(MHbVN)
-```
-
-Because the p value is less than .01 we can reject the null and say that we think that there is a statistically significant relationship between these two categories.
-
-####Create Visualization
 
 ```{r}
 #Modify Labels for perception of mental health disclosure impact
 health$negimp <- factor(health$Do.you.think.that.discussing.a.mental.health.disorder.with.your.employer.would.have.negative.consequences.,
 levels = c("Maybe", "No", "Yes"),
-labels = c("Maybe Expect a Negative Impact", "Do Not Expect Negative Impact", "Expect Negative Impact"))
-#Check Results
-table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$negimp)
+labels = c("Maybe Expect Impact", "Do Not Expect Impact", "Expect Impact"))
+#create subset
+DiscMHBossbyNegImpact <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s.., health$negimp)
 ```
 
+####Crosstab Table
 
 ```{r}
-t12 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar()+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health disorder\nwith Supervisor by Perception of Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder\nwith your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t12
+kable(DiscMHBossbyNegImpact)
+```
+
+####Proportions Table
+
+```{r}
+kable(prop.table(DiscMHBossbyNegImpact, 2))
+```
+
+####Chi-Squared
+
+```{r}
+chisq.test(DiscMHBossbyNegImpact)
+```
+
+Our null hypothesis is that there is that reported comfort discussing mental health with supervisor and perception that disclosing a mental health disorder to employer would have a negative impact on career are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). Because the p value is less than .01 we can reject the null and state that we suspect that there is a relationship between these two variables. 
+
+####Visualizing the Data
+
+```{r}
+DiscMHBossbyNegImpact_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.direct.supervisor.s..))+geom_bar(fill = "red")+facet_wrap(health$negimp ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health disorder\nwith Supervisor by Perception of Negative Impact") + xlab("Would you feel comfortable discussing a mental health disorder\nwith your supervisor?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHBossbyNegImpact_viz
 ```
 
 ####Interpret Results
@@ -768,29 +937,41 @@ The results here are fairly clear.  Most people who responded that they feel tha
 
 ##Comfort with taking to Coworkers About Mental Health
 
-This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a coworkers in case they need additional assistance. In addition, we may want to consider training employees on how to handle instances where coworkers reach out to them about mental health. 
+This part of the analysis looks at answers to the question "Would you feel comfortable discussing a mental health disorder with your coworkers" by respondent demographics as well as their reports of several company characteristics. This is important because if an employee has a mental health issue, they should ideally be comfortable discussing it with a coworkers in case they need additional assistance. In addition, we may want to consider training employees on how to handle instances where coworkers reach out to them about mental health. 
 
 ###Answers by Gender
 
 ```{r}
-MHCbG <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$gender)
-MHCbG
-prop.table(MHCbG, 2)
+#Create subset
+DiscMHCoworkerbyGender <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$gender)
 ```
+
+####Crosstab Table
+
+```{r}
+kable(DiscMHCoworkerbyGender)
+```
+
+####Proportions Table
+
+```{r}
+kable(prop.table(DiscMHCoworkerbyGender, 2))
+```
+
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(MHCbG)
+chisq.test(DiscMHCoworkerbyGender)
 ```
 
-The chi-squared is very large.  Therefore, we cannot reject the null hypothesis that these categories are independent.
+Our null hypothesis is that there is that reported comfort discussing mental health with coworkers and gender are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). The chi-squared is very large.  Therefore, we cannot reject the null hypothesis that these categories are independent.
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t13 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t13
+DiscMHCoworkerbyGender_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar(fill = "orange")+facet_wrap(health$gender ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Gender") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHCoworkerbyGender_viz
 ```
 
 ####Interpret Results
@@ -800,25 +981,37 @@ The chi-squared test appears to indicate that there is not a significant relatio
 ###Answers by Age Group
 
 ```{r}
-MHCbA <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$AgeGroup)
-MHCbA
-#Proportions (as column percentages)
-prop.table(MHCbA, 2)
+#Create subset
+DiscMHCoworkerbyAge <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$AgeGroup)
+```
+
+####Crosstab Table
+
+```{r}
+kable(DiscMHCoworkerbyAge)
+```
+
+####Proportions Table
+
+```{r}
+kable(prop.table(DiscMHCoworkerbyAge, 2))
 ```
 
 ####Chi-Squared 
 
 ```{r}
-chisq.test(MHCbA)
+chisq.test(DiscMHCoworkerbyAge)
 ```
 
-We get a warning that the approximation may be incorrect, likely because some of the values from the table are small.  However, it potentially indicates that that the differences between age groups is not statistically significant.
+Our null hypothesis is that there is that reported comfort discussing mental health with coworkers and age are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
-####Create Visualization
+We get a warning that the approximation may be incorrect, likely because because of the small number of respondents in our survey in the 57-77 age group (Townsley, 2002). However, the large p value indicates that that the differences in perceived ease of requesting leave between age may not be statistically significant (or we do not have enough information because of the small number of people in the 57-77 age group in our dataset).
+
+####Visualizing the Data
 
 ```{r}
-t14 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Age Group") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t14
+DiscMHCoworkerbyAge_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar(fill = "orange")+facet_wrap(health$AgeGroup ~., scales="free_y") + ggtitle("Comfort with Discussing Mental Health\nDisorder with Coworkers by Age Group") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHCoworkerbyAge_viz
 ```
 
 ####Interpret Results
@@ -828,26 +1021,41 @@ Members of the 17-37 and 37-57 age group have a similar pattern.  The majority o
 ###Answers by Company Size
 
 ```{r}
-MHCbCS <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$CompanySize)
-MHCbCS
-#Proportions (as column percentages)
-prop.table(MHCbCS, 2)
+#Create subset
+DiscMHCoworkerbyCompSize <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$CompanySize)
 ```
+
+####Crosstab Table
+
+```{r}
+#Create crosstab table
+kable(DiscMHCoworkerbyCompSize)
+```
+
+####Proportions Table
+
+```{r}
+#Create proportions table
+kable(prop.table(DiscMHCoworkerbyCompSize, 2))
+```
+
 
 ####Chi-Squared
 
 ```{r}
 #Chi-Squared (the p value is small)
-chisq.test(MHCbCS)
+chisq.test(DiscMHCoworkerbyCompSize)
 ```
+
+Our null hypothesis is that there is that reported comfort discussing mental health with coworkers and age are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
 The chi-squared test shows a p value that is less than 0.01.  Therefore, we can reject the null hypothesis (that there is no relationship between these variables). This indicates that there may be a relationship between company size and comfort level with talking to coworkers about a mental health issue.
 
-####Create Visualization
+####Visualizing the Data
 
 ```{r}
-t15 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health\nDisorder with Coworkers by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t15
+DiscMHCoworkerbyCompSize_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar(fill = "purple")+facet_wrap(health$CompanySize ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health\nDisorder with Coworkers by Company Size") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHCoworkerbyCompSize_viz
 ```
 
 ####Interpret Results
@@ -857,23 +1065,35 @@ Respondents from companies with 1-5 employees are roughly evenly split among the
 ###Answers by If They Ever Saw A Poor Response to Mental Health Issue
 
 ```{r}
-MHCbPR <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
-MHCbPR
+#create subset
+DiscMHCoworkerbyPoorResponse <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace.)
+```
+
+####Crosstab Table
+```{r}
+kable(DiscMHCoworkerbyPoorResponse)
+```
+
+####Proportions Table
+```{r}
+kable(prop.table(DiscMHCoworkerbyPoorResponse, 2))
 ```
 
 ####Chi-Squared
 
 ```{r}
-chisq.test(MHCbPR)
+chisq.test(DiscMHCoworkerbyPoorResponse)
 ```
 
-The chi-squared test shows a p value that is less than 0.01.  Therefore, we can reject the null hypothesis (that there is no relationship between these variables). This indicates that there may be a relationship between experience with a poor response to a mental health issue with talking to coworkers about a mental health issue.
+Our null hypothesis is that there is that reported comfort discussing mental health with coworkers and experience with a poor response to a mental health issue (current or prior employer) are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002)
 
-####Create Visualization
+The chi-squared test shows a p value that is less than .01.  Therefore, we can reject the null hypothesis (that there is no relationship between these variables). This indicates that there may be a relationship between experience with a poor response to a mental health issue with talking to coworkers about a mental health issue.
+
+####Visualizing the Data
 
 ```{r}
-t16 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health disorders\nwith Coworkers by Experience with\npoor Workplace Response\nto mental health") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t16
+DiscMHCoworkerbyPoorResponse_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar(fill="red")+facet_wrap(health$Have.you.observed.or.experienced.an.unsupportive.or.badly.handled.response.to.a.mental.health.issue.in.your.current.or.previous.workplace. ~., scales="free_y") + ggtitle("Comfort with Discussing Mental health disorders\nwith Coworkers by Experience with\npoor Workplace Response\nto mental health") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHCoworkerbyPoorResponse_viz
 ```
 
 ####Interpret Results
@@ -883,22 +1103,38 @@ When asked about experience with a poorly handled response to mental health, res
 ###Answers by If They Think Coworkers Would View Them Negatively If They Knew You Suffered From a Mental Health Issue
 
 ```{r}
-MHCbCN <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue.)
-MHCbCN
+#Modify Labels for perception of mental health disclosure impact by coworkers
+health$negimpco <- factor(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue.,
+levels = c("Maybe", "No, I don't think they would", "No, they do not", "Yes, I think they would", "Yes, they do"),
+labels = c("Maybe", "No, don't think so", "No, they don't", "Yes, think so", "Yes, they do"))
+#create subset
+DiscMHCoworkerbyNegView <- table(health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers., health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue.)
+```
+
+####Crosstab Table
+
+```{r}
+kable(DiscMHCoworkerbyNegView)
+```
+
+####Proportions Tabale
+
+```{r}
+kable(prop.table(DiscMHCoworkerbyNegView, 2))
 ```
 
 ####Chi-Squared
 ```{r}
-chisq.test(MHCbCN)
+chisq.test(DiscMHCoworkerbyNegView)
 ```
 
-The chi-squared is less than .01.  Therefore, we can reject the null and say that there is a relationship between these two variables. 
+Our null hypothesis is that there is that reported comfort discussing mental health with coworkers and experience with a poor response to a mental health issue (current or prior employer) are independent. Our alternative hypothesis is that there is a relationship between these two variables. Because the sensitivity of this test to larger sample sizes we are setting the p value to .01 (Townsley, 2002). The chi-squared is less than .01.  Therefore, we can reject the null and say that there is a relationship between these two variables. 
 
 ####Creating the Visualization
 
 ```{r}
-t17 <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar()+facet_wrap(health$Do.you.think.that.team.members.co.workers.would.view.you.more.negatively.if.they.knew.you.suffered.from.a.mental.health.issue. ~., scales="free_y") + ggtitle("Comfort with discussing Mental Health Disorder with\n Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
-t17
+DiscMHCoworkerbyNegView_viz <- ggplot(health, aes(x = health$Would.you.feel.comfortable.discussing.a.mental.health.disorder.with.your.coworkers.))+geom_bar(fill = "red")+facet_wrap(health$negimpco ~., scales="free_y") + ggtitle("Comfort with discussing Mental Health Disorder with\n Coworkers by Perceived Negative Impact") + xlab("Would you feel comfortable discussing a mental health\ndisorder with your coworkers?") + ylab("Count") + theme(axis.title=element_text(size=12), axis.text=element_text(size=10))
+DiscMHCoworkerbyNegView_viz
 ```
 
 ####Interpretation of Results
@@ -958,4 +1194,6 @@ Laura - For the work plan, I worked with the group to draft the sections on data
 
 #Works Cited
 
-Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees??? Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123???145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
+Townsley, E.R. (2002). Some limitations of chi-square. Retrieved December 6, 2018 from https://www.mtholyoke.edu/courses/etownsle/qr/Chi%20square%20limitations.htm. 
+
+Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123-145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
