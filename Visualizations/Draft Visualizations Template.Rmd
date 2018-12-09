@@ -1186,14 +1186,34 @@ summary(health$Do.you.think.that.discussing.a.mental.health.disorder.with.previo
 
 #Summary
 
-This is a placeholder for the summary.
+According to the 2010 U.S. National Comorbidity Survey, about 18 percent of employed adults have had symptoms of a mental health disorder in the previous month (Harvard Medical School, 2010, para. 1). However, mental health stigma can inhibit people's willingness to seek help (Harvard Medical School, 2010, para. 2). Research on employee resource programs in the workplace targeting mental health/substance abuse issues indicates that conducting outreach to workers on mental health as well as expanding benefits may result in more seeking help for mental health and/or substance abuse issues (Lindrooth, et al, 2005, pp. 1092, 1102; Lo Sasso, et al, 2006, pp. 366, 370; Deitz, et al, 2005, p. 313).  Benefits could include improved employee mood/health, increased productivity, and lower absenteeism in the workplace (Harvard Medical School, 2010, para. 28-29; Lo Sasso, Rost, & Beck, 2006, p. 352).  
+
+Our target audience are Human Resources professionals who work for technology companies (or employ technology-focused workers) who are interested in learning more about mental illness in the workplace and are considering expanding wellness programs.  For our analysis, we used the Open Sourcing Mental Illness dataset. The dataset is a 2016 voluntary survey done on mental health in the technology industry (Open Sourcing Mental Illness, LTD, 2016b).  This dataset allows us to learn more about what mental health disorders are common, what other companies are doing, and how workers view mental health in the workplace.  For our analysis we only included those who worked for a company (i.e., not self-employed).  Out of 1,433 total entries, 1,146 were included.  We cleaned the dataset by standardizing data, as well as correcting typos and formatting errors.  During our analysis, we shortened some of the labels to make it easier to fit on visualizations and tables. 
+
+[INSERT PLOT AND INTERPRETATION OF PLOT HERE]
+
+Based off our analysis, it is clear that a significant number of people in the technology workplace have a mental health disorder.  This analysis makes it clear that Human Resource professionals who are interested in expanding outreach need to review their policies regarding requesting leave and protection of employee anonymity when they are handling a mental health issue.  Furthermore, the analysis shows that there is unease among many employees regarding the impact of disclosing a mental health disorder on their career.  Therefore, it is likely necessary to provide training to employees and supervisors with the goal of reducing stigma around mental health. 
 
 #Who did what in the project
 
-Laura - For the work plan, I worked with the group to draft the sections on dataset used, audience, and research questions. I also reviewed a list of studies on mental health in the workplace and drafted summaries that can be used as a reference by the group. For the data cleaning documentation, I examined nine variables and noted if there were any issues. I worked with other group members to determine how to handle the variables. For the R Script, I did frequency tables related to my analyses and the variables I examined for data cleaning.  For the R Plot Draft, I created visualizations and interpretations for my analyses (in section 3, the portions on anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors). For the presentation, I created a template for the presentation that included what was needed and placeholder slides for the analyses the group did. I also did slides related to my analysis (anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors) and used the findings to draft some recommendations.For the final package, I did the first draft of the summary.
+Laura - For the work plan, I worked with the group to draft the sections on dataset used, audience, and research questions. I also reviewed a list of studies on mental health in the workplace and drafted summaries that can be used as a reference by the group. For the data cleaning documentation, I examined nine variables and noted if there were any issues. I worked with other group members to determine how to handle the variables. For the R Script, I did frequency tables related to my analyses and the variables I examined for data cleaning.  For the R Plot Draft, I created visualizations and interpretations for my analyses (in section 3, the portions on anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors). For the presentation, I created a template for the presentation that included what was needed and placeholder slides for the analyses the group did. I also did slides related to my analysis (anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors) and used the findings to draft some recommendations.For the final package, I did the first draft of the summary as well as revised and cleaned up the analyses that I worked on.
 
 #Works Cited
 
-Townsley, E.R. (2002). Some limitations of chi-square. Retrieved December 6, 2018 from https://www.mtholyoke.edu/courses/etownsle/qr/Chi%20square%20limitations.htm. 
+Deitz, D., Cook, R., & Hersch, R. (2005). Workplace Health Promotion and Utilization of Health Services: Follow-up Data Findings. The Journal of Behavioral Health Services & Research, 32(3), 306-319. Retrieved October 21, 2018 from https://doi-org.proxy-um.researchport.umd.edu/10.1007/BF02291830
+
+Harvard Medical School (2010). Mental health problems in the workplace [Newsletter]. Retrieved December 8, 2018, from https://www.health.harvard.edu/newsletter_article/mental-health-problems-in-the-workplace. 
+
+Lo Sasso, A. T., Lindrooth, R. C., Lurie, I. Z., & Lyons, J. S. (2006). Expanded Mental Health Benefits and Outpatient Depression Treatment Intensity. Medical Care, 44(4), 366-372. Retrieved October 21, 2018 from https://doi-org.proxy-um.researchport.umd.edu/10.1097/01.mlr.0000204083.55544.f8
+
+Lindrooth, R. C., Lo Sasso, A. T., & Lurie, I. Z. (2005). The Effect of Expanded Mental Health Benefits on Treatment Initiation and Specialist Utilization. Health Services Research, 40(4), 1092-1107. Retrieved October 21, 2018 from https://doi-org.proxy-um.researchport.umd.edu/10.1111/j.1475-6773.2005.00406.x 
+
+Lo Sasso, A. T., Rost, K., & Beck, A. (2006). Modeling the Impact of Enhanced Depression Treatment on Workplace Functioning and Costs: A Cost-Benefit Approach. Medical Care, 44(4), 352-358. Retrieved October 21, 2018 from https://doi-org.proxy-um.researchport.umd.edu/10.1097/01.mlr.0000204049.30620.1e
 
 Milne, S. H., Blum, T. C., & Roman, P. M. (1994). Factors Influencing Employees Propensity to Use an Employee Assistance Program. Personnel Psychology, 47(1), 123-145. Retrieved October 24, 2018 from http://search.ebscohost.com.proxy-um.researchport.umd.edu/login.aspx?direct=true&db=bth&AN=9411113184&site=ehost-live
+
+Open Sourcing mental Illness, LTD (2016a). OSMI (Version 1) [Data file]. Retrieved September 7, 2018, from https://osmihelp.org/research
+
+Open Sourcing Mental Illness, LTD (2016b). osmi-survey-2016_1479139902 [Metadata File]. Retrieved September 19, 2018, from https://osmihelp.org/research.
+
+Townsley, E.R. (2002). Some limitations of chi-square. Retrieved December 6, 2018 from https://www.mtholyoke.edu/courses/etownsle/qr/Chi%20square%20limitations.htm. 
