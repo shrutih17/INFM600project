@@ -337,7 +337,7 @@ We get a warning that the approximation may be incorrect, likely because some of
 
 ```{r}
 #Create visualization
-AnoymityPolicies_By_CompanySize_Viz <- ggplot(health, aes(x = health$AnonPolicies2))+geom_bar(fill="purple")+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Anonymity Protections by Comapny Size") + xlab("Perceived Difficulty Level") + ylab("Count")+ theme(axis.title=element_text(size=12))
+AnoymityPolicies_By_CompanySize_Viz <- ggplot(health, aes(x = health$AnonPolicies2))+geom_bar(fill="purple")+facet_wrap(~health$CompanySize, scales="free_y") + ggtitle("Anonymity Protections by Comapny Size") + xlab("Is your anonymity protected?") + ylab("Count")+ theme(axis.title=element_text(size=12))
 AnoymityPolicies_By_CompanySize_Viz
 ```
 
