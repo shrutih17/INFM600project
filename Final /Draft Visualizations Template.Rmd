@@ -129,7 +129,7 @@ dfageprop <- as.data.frame(ageprop)
 #Distribution of respondents reporting a mental disorder by age groups
 ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status based on age groups')
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status across age groups')
 ```
 
 ####Interpretation of results
@@ -144,7 +144,7 @@ ageprop1
 dfageprop1 <- as.data.frame(ageprop1)
 ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')+ggtitle('Distribution of mental health status based on age groups')
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')+ggtitle('Distribution of mental health status across age groups')
 ```
 
 ####Interepretion of results
