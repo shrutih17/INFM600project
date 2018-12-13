@@ -84,7 +84,7 @@ dr1 <-as.data.frame(rowprop)
 # Distribution of respondents among gender provided they may/have/donot have a mental diorder 
 ggplot(data = dr1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution of mental health status among genders (1)')
+  labs(x = NULL, y = 'Proportion', fill = 'Gender')+ggtitle('Distribution of mental health status among genders')
 ```
 
 ####Interpretation of results 
@@ -101,7 +101,7 @@ colprop
 dr2 <-as.data.frame(colprop)
 ggplot(data = dr2, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = NULL, y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status among genders (2)')
+  labs(x = NULL, y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status among genders')
 ```
 
 ####Interpretation of results 
@@ -129,7 +129,7 @@ dfageprop <- as.data.frame(ageprop)
 #Distribution of respondents reporting a mental disorder by age groups
 ggplot(data = dfageprop, aes(x =Var2 , y = Freq, fill = Var1)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status based on age groups (1)')
+  labs(x = "Age Groups", y = 'Proportion', fill = 'Disorder')+ggtitle('Distribution of mental health status based on age groups')
 ```
 
 ####Interpretation of results
@@ -144,7 +144,7 @@ ageprop1
 dfageprop1 <- as.data.frame(ageprop1)
 ggplot(data = dfageprop1, aes(x =Var1 , y = Freq, fill = Var2)) + 
   geom_bar(stat = 'identity', position = 'dodge', alpha = 2/3) +              
-  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')+ggtitle('Distribution of mental health status based on age groups (2)')
+  labs(x = "Disorder", y = 'Proportion', fill = 'Age group')+ggtitle('Distribution of mental health status based on age groups')
 ```
 
 ####Interepretion of results
@@ -1204,7 +1204,7 @@ Monalisa -
 
 Laura - For the work plan, I worked with the group to draft the sections on dataset used, audience, and research questions. I also reviewed a list of studies on mental health in the workplace and drafted summaries that can be used as a reference by the group. For the data cleaning documentation, I examined nine variables and noted if there were any issues. I worked with other group members to determine how to handle the variables. For the R Script, I did frequency tables related to my analyses and the variables I examined for data cleaning.  For the R Plot Draft, I created visualizations and interpretations for my analyses (in section 3, the portions on anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors). For the presentation, I created a template for the presentation that included what was needed and placeholder slides for the analyses the group did. I also did slides related to my analysis (anonymity policies, ease of taking leave, comfort discussing with coworkers and supervisors) and used the findings to draft some recommendations.For the final package, I did the first draft of the summary as well as revised and cleaned up the analyses that I worked on.
 
-Shruti - 
+Shruti - Collaborated with the team members to decide upon work plan and the tasks. For data cleaning, I examined nine variables for any issues. Worked on the age variable where I replaced the meaningless ages like 3, 110 with the average age.  I exmained all the answers to the gender variable as they were subjective responses and divided them into Male, Female and others accordingly. For the descriptive analysis, I worked with the nine variables using summary and tables. For the visualization and plotting, I worked on the distribution of mental disorder. I analysed the responses to come up with a way to split it. For instance, the responses were of the format - Anxiety Disorder (Generalized, Social, Phobia, etc)|Mood Disorder (Depression, Bipolar Disorder, etc), I split them and separated them using R code to just the higher categories like anxiety Disorder, Mood Disorder to visualise it. For ease of visualisations using age, I created age groups (17-37, 37-57 etc). I visualised the distribution of mental illness across gender and age. I also did the visualisation and interpretations on negative consequences on discussing physical vs mental disorders. I documented my parts in the R markdown file. I worked on my parts for the presentation. For final package, I cleaned up the analaysis and visualizations that I worked on as well.
 
 #Works Cited
 
