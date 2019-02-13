@@ -1,4 +1,4 @@
-# INFM600project
+# Attitude towards mental health disorder
 Repository for INFM600 Project Work
 
 We are working on the Open Sourcing Mental Illness dataset.
